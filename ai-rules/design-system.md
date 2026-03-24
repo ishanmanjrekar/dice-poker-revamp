@@ -34,6 +34,7 @@ The palette is rooted in earth tones and cream foundations, designed to reduce e
 * `surface-container`: #edefe2
 * `surface-container-highest`: #e1e4d7
 * `on-surface-variant`: #47473e (Subtle text/icons)
+* **Assets:** Custom suit icons are stored as high-res PNGs (`src/assets/suits/`), and dice faces are custom SVGs (`src/assets/dice/`).
 
 ---
 

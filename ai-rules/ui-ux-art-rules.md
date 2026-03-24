@@ -13,9 +13,13 @@ This document synthesizes the visual and interaction standards for the "Modern P
 ### Color Tokens
 *   **Primary/Accent:** Terracotta (#ad3130). Used for major CTAs, hand selection, and critical rank indicators.
 *   **Neutral:** Deep Olive (#555a39). Used for text, grounding elements, and secondary interactions.
-*   **Card Suits:**
-    *   `Hearts`/`Diamonds`: Terracotta (#ad3130).
-    *   `Spades`/`Clubs`: Deep Olive (#555a39).
+*   **Card Suits (Custom Assets):**
+    - `Hearts`: `suits-hearts.png` (Terracotta #ad3130)
+    - `Diamonds`: `suits-diamonds.png` (Terracotta #ad3130)
+    - `Spades`: `suits-spades.png` (Deep Olive #555a39)
+    - `Clubs`: `suits-clubs.png` (Deep Olive #555a39)
+    - **Path:** `src/assets/suits/`
+    - **Usage:** Use as high-res foreground assets for cards and UI indicators.
 
 ### Typography
 *   **Headlines/Display:** **Be Vietnam Pro** (Bold/ExtraBold). Tight tracking, editorial feel.
@@ -59,8 +63,8 @@ All cards are composite objects rendered in 5 functional layers (L0-L4):
 
 ---
 
-## 5. Interaction Ethics
-
-*   **Non-Blocking Logic:** UI must never wait for an animation to finish before updating internal game state (unless it’s a critical transition like "Reshuffling").
+## 5. Dice & Interaction Assets
+*   **Dice:** Use custom SVGs located at `src/assets/dice/` (`dice-six-faces-[one-six].svg`).
+*   **Animation:** Use high-contrast color fills (Terracotta or Deep Olive) for the pips to ensure visibility against the parlor background.
 *   **Haptics:** Trigger a "Tick" (10ms) on card selection and a "Success" vibration on hand play.
 *   **Accessibility:** All buttons must have a minimum touch target of `48px x 48px`, regardless of visual size.

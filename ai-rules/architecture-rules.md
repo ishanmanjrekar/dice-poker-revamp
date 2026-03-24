@@ -10,6 +10,8 @@ To maintain a scalable codebase, the application should be structured into four 
 2.  **Logic (The Engine)**: Pure functions that calculate scores, handle deck reshuffling, and manage game progression.
 3.  **View (The UI Component)**: React/Vite (or similar) components that render based on the State. Components should be "dumb" and only emit events.
 4.  **Assets (The Registry)**: A dynamic system to load/swap card skins, icons, and sounds.
+    - **Suits:** `src/assets/suits/*.png`
+    - **Dice:** `src/assets/dice/*.svg`
 
 ## 2. Layered Card System
 
@@ -67,6 +69,8 @@ The game should detect its environment to optimize performance and UI:
 
 Cosmetics should be implemented via a "Skin Registry":
 - A JSON mapping that points `CardID` to specific asset paths for Base, Rank, and Suit layers.
+- **Default Suits:** Mapped to `src/assets/suits/suits-[suit].png`.
+- **Default Dice:** Mapped to `src/assets/dice/dice-six-faces-[value].svg`.
 - To unlock a skin, simply update the `currentSkin` key in the **State Layer**.
 - All components must listen to this key and re-render their layers accordingly.
 
