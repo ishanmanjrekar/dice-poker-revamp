@@ -53,4 +53,4 @@ Dice Poker is a solo roguelike-inspired card game that combines poker hand scori
 - **Platform Support**: The game is intended for web and mobile (itch.io/Netlify). The core viewport is optimized for **iPhone 15 (9:16 Portrait)**. See [architecture-rules.md](file:///c:/Users/ishan/Documents/GitHub/dice-poker-revamp/ai-rules/architecture-rules.md) for technical specs.
 - **Scalability**: Architecture should allow for easy addition of new cards, deck types, or modifiers.
 - **Configuration**: Game parameters (multipliers, hand count, card values) should be editable easily through a game-config.json file
-- **UI/UX**: Update with the relevant md file links once they are created
+- **UI/UX**: Visual and interaction standards are defined in [ui-ux-art-rules.md](file:///c:/Users/ishan/Documents/GitHub/dice-poker-revamp/ai-rules/ui-ux-art-rules.md).
