@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dice Poker Settings</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&amp;family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Montserrat:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-fixed-variant": "#45492a",
+                        "on-primary-container": "#ccd1a7",
+                        "on-surface-variant": "#47473e",
+                        "background": "#fcfef1",
+                        "surface-container-low": "#f3f5e8",
+                        "surface": "#fcfef1",
+                        "tertiary-container": "#545b36",
+                        "primary-container": "#555a39",
+                        "primary": "#555a39",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#191d15",
+                        "inverse-on-surface": "#f0f2e5",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#e1e4d7",
+                        "surface-container-high": "#e7e9dd",
+                        "primary-fixed": "#e1e6bb",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#2e3229",
+                        "secondary-container": "#e85c57",
+                        "tertiary": "#3d4320",
+                        "surface-dim": "#d9dbcf",
+                        "secondary": "#e85c57",
+                        "secondary-fixed": "#ffdad7",
+                        "on-primary": "#ffffff",
+                        "outline": "#78786d",
+                        "on-primary-fixed": "#191e04",
+                        "on-background": "#191d15",
+                        "surface-bright": "#fcfef1",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#c4cb9c",
+                        "surface-container": "#edefe2",
+                        "primary-fixed-dim": "#c5caa1",
+                        "tertiary-fixed": "#e0e7b7",
+                        "surface-container-highest": "#e1e4d7",
+                        "on-tertiary-fixed": "#181e02",
+                        "on-secondary-container": "#6d000b",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#5c6140",
+                        "on-tertiary-fixed-variant": "#434a26",
+                        "on-secondary-fixed": "#410004",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#8b171c",
+                        "on-tertiary-container": "#ccd1a7",
+                        "outline-variant": "#c8c7ba",
+                        "secondary-fixed-dim": "#ffb3ad",
+                        "inverse-primary": "#c5caa1"
+                    },
+                    fontFamily: {
+                        "headline": ["Be Vietnam Pro"],
+                        "body": ["Be Vietnam Pro"],
+                        "label": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fcfef1;
+            color: #555a39;
+            -webkit-font-smoothing: antialiased;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f3f5e8; }
+        ::-webkit-scrollbar-thumb { background: #e1e4d7; border-radius: 4px; }
+        .card-dot { @apply w-1.5 h-1.5 rounded-full; }
+        .suit-red { color: #e85c57; }
+        .suit-black { color: #191d15; }
+    </style>
+<style>
+        body {
+            min-height: max(700px, 100dvh);
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 left-0 w-full z-50 bg-[#fcfef1] dark:bg-stone-900 flex justify-between items-center px-6 py-4 border-b border-[#edefe2] dark:border-stone-800">
+<div class="flex items-center gap-4">
+<button class="text-[#555a39] dark:text-[#e1e4d7] hover:bg-[#f3f5e8] transition-colors p-2 rounded-full active:scale-95">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="text-xl font-headline font-bold tracking-tight text-[#555a39] dark:text-[#e1e4d7] uppercase">DICE POKER</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-[#555a39] dark:text-[#e1e4d7] hover:bg-[#f3f5e8] transition-colors p-2 rounded-full active:scale-95">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Content Canvas -->
+<main class="pt-20 pb-28 px-4 max-w-4xl mx-auto space-y-6">
+<!-- Page Title -->
+<div class="px-2">
+<h2 class="text-3xl font-headline font-bold text-primary tracking-tight">Settings</h2>
+<p class="text-on-surface-variant font-body mt-1 text-sm">Customize multipliers and review the parlor rules.</p>
+</div>
+<!-- Section: RULES -->
+<section class="space-y-4">
+<div class="flex items-center gap-3 px-2">
+<span class="material-symbols-outlined text-secondary text-xl" data-icon="menu_book">menu_book</span>
+<h3 class="text-sm font-headline font-semibold text-primary uppercase tracking-wider">The Rules</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<!-- Rule Item -->
+<div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-xl border border-surface-container shadow-sm">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full text-primary shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="layers">layers</span>
+</div>
+<p class="text-on-surface text-sm font-medium">6 piles: 7 down + 1 up each.</p>
+</div>
+<!-- Rule Item -->
+<div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-xl border border-surface-container shadow-sm">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full text-primary shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="pan_tool">pan_tool</span>
+</div>
+<p class="text-on-surface text-sm font-medium">Start with 4 cards in hand.</p>
+</div>
+<!-- Rule Item -->
+<div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-xl border border-surface-container shadow-sm">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full text-primary shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="casino">casino</span>
+</div>
+<p class="text-on-surface text-sm font-medium">Roll dice to take matching pile card.</p>
+</div>
+<!-- Rule Item -->
+<div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-xl border border-surface-container shadow-sm">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full text-primary shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="refresh">refresh</span>
+</div>
+<p class="text-on-surface text-sm font-medium">Max 3 rolls per round.</p>
+</div>
+<!-- Rule Item -->
+<div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-xl border border-surface-container shadow-sm">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full text-primary shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="front_hand">front_hand</span>
+</div>
+<p class="text-on-surface text-sm font-medium">Hand limit: 7 cards.</p>
+</div>
+<!-- Rule Item -->
+<div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-xl border border-surface-container shadow-sm">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full text-primary shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="touch_app">touch_app</span>
+</div>
+<p class="text-on-surface text-sm font-medium">Select up to 5 cards &amp; play.</p>
+</div>
+<!-- Rule Item -->
+<div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-xl border border-surface-container shadow-sm">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full text-primary shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="military_tech">military_tech</span>
+</div>
+<p class="text-on-surface text-sm font-medium">Score using Poker ranks.</p>
+</div>
+<!-- Rule Item -->
+<div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-xl border border-surface-container shadow-sm">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-lowest rounded-full text-primary shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="stars">stars</span>
+</div>
+<p class="text-on-surface text-sm font-medium">Play 15 hands total.</p>
+</div>
+</div>
+</section>
+<!-- Section: HandMultiplier -->
+<section class="space-y-4">
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="trending_up">trending_up</span>
+<h3 class="text-xl font-headline font-semibold text-primary">Hand Multipliers</h3>
+</div>
+<button class="bg-gray-300 text-white opacity-50 px-5 py-2 rounded-full font-headline font-bold text-xs transition-all cursor-not-allowed shadow-sm active:scale-95" id="save-button">
+                    SAVE
+                </button>
+</div>
+<div class="grid grid-cols-1 gap-2">
+<script>
+                    function handleMultiplierChange() {
+                        const saveBtn = document.getElementById('save-button');
+                        saveBtn.classList.remove('bg-gray-300', 'opacity-50', 'cursor-not-allowed');
+                        saveBtn.classList.add('bg-[#e85c57]', 'opacity-100', 'cursor-pointer', 'shadow-md');
+                    }
+                    function updateVal(btn, delta) {
+                        const input = btn.parentElement.querySelector('input');
+                        input.value = Math.max(0, parseInt(input.value) + delta);
+                        handleMultiplierChange();
+                    }
+                </script>
+<!-- Hand Multiplier Rows -->
+<!-- High Card -->
+<div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between shadow-sm border border-surface-container">
+<div class="flex items-center gap-3">
+<div class="flex -space-x-1 shrink-0">
+<div class="w-5 h-7 bg-white border border-outline-variant rounded-[2px] flex items-center justify-center text-[10px] font-bold text-on-surface">A</div>
+</div>
+<span class="font-label font-medium text-on-surface-variant uppercase tracking-wider text-[10px]">High Card</span>
+</div>
+<div class="flex items-center bg-surface-container rounded-lg p-1">
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, -1)"><span class="material-symbols-outlined text-lg">remove</span></button>
+<input class="w-10 bg-transparent border-none text-center font-label font-bold text-primary p-0 focus:ring-0" readonly="" type="number" value="1"/>
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, 1)"><span class="material-symbols-outlined text-lg">add</span></button>
+</div>
+</div>
+<!-- Pair -->
+<div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between shadow-sm border border-surface-container">
+<div class="flex items-center gap-3">
+<div class="flex -space-x-1 shrink-0">
+<div class="w-5 h-7 bg-white border border-outline-variant rounded-[2px] flex items-center justify-center text-[10px] font-bold text-on-surface">K</div>
+<div class="w-5 h-7 bg-white border border-outline-variant rounded-[2px] flex items-center justify-center text-[10px] font-bold text-on-surface shadow-sm">K</div>
+</div>
+<span class="font-label font-medium text-on-surface-variant uppercase tracking-wider text-[10px]">Pair</span>
+</div>
+<div class="flex items-center bg-surface-container rounded-lg p-1">
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, -1)"><span class="material-symbols-outlined text-lg">remove</span></button>
+<input class="w-10 bg-transparent border-none text-center font-label font-bold text-primary p-0 focus:ring-0" readonly="" type="number" value="2"/>
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, 1)"><span class="material-symbols-outlined text-lg">add</span></button>
+</div>
+</div>
+<!-- Two Pair -->
+<div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between shadow-sm border border-surface-container">
+<div class="flex items-center gap-3">
+<div class="flex -space-x-1 shrink-0">
+<div class="w-5 h-7 bg-white border border-outline-variant rounded-[2px] flex items-center justify-center text-[10px] font-bold text-on-surface">Q</div>
+<div class="w-5 h-7 bg-white border border-outline-variant rounded-[2px] flex items-center justify-center text-[10px] font-bold text-on-surface shadow-sm">Q</div>
+<div class="w-5 h-7 bg-white border border-outline-variant rounded-[2px] flex items-center justify-center text-[10px] font-bold text-on-surface shadow-md">J</div>
+<div class="w-5 h-7 bg-white border border-outline-variant rounded-[2px] flex items-center justify-center text-[10px] font-bold text-on-surface shadow-lg">J</div>
+</div>
+<span class="font-label font-medium text-on-surface-variant uppercase tracking-wider text-[10px]">Two Pair</span>
+</div>
+<div class="flex items-center bg-surface-container rounded-lg p-1">
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, -1)"><span class="material-symbols-outlined text-lg">remove</span></button>
+<input class="w-10 bg-transparent border-none text-center font-label font-bold text-primary p-0 focus:ring-0" readonly="" type="number" value="3"/>
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, 1)"><span class="material-symbols-outlined text-lg">add</span></button>
+</div>
+</div>
+<!-- Three of Kind -->
+<div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between shadow-sm border border-surface-container">
+<div class="flex items-center gap-3">
+<div class="flex -space-x-1 shrink-0">
+<div class="w-5 h-7 bg-white border border-outline-variant rounded-[2px] flex items-center justify-center text-[10px] font-bold text-on-surface">9</div>
+<div class="w-5 h-7 bg-white border border-outline-variant rounded-[2px] flex items-center justify-center text-[10px] font-bold text-on-surface shadow-sm">9</div>
+<div class="w-5 h-7 bg-white border border-outline-variant rounded-[2px] flex items-center justify-center text-[10px] font-bold text-on-surface shadow-md">9</div>
+</div>
+<span class="font-label font-medium text-on-surface-variant uppercase tracking-wider text-[10px]">Three of Kind</span>
+</div>
+<div class="flex items-center bg-surface-container rounded-lg p-1">
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, -1)"><span class="material-symbols-outlined text-lg">remove</span></button>
+<input class="w-10 bg-transparent border-none text-center font-label font-bold text-primary p-0 focus:ring-0" readonly="" type="number" value="4"/>
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, 1)"><span class="material-symbols-outlined text-lg">add</span></button>
+</div>
+</div>
+<!-- Straight -->
+<div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between shadow-sm border border-surface-container">
+<div class="flex items-center gap-3">
+<div class="flex -space-x-1 shrink-0">
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface">2</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-sm">3</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-md">4</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-lg">5</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-xl">6</div>
+</div>
+<span class="font-label font-medium text-on-surface-variant uppercase tracking-wider text-[10px]">Straight</span>
+</div>
+<div class="flex items-center bg-surface-container rounded-lg p-1">
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, -1)"><span class="material-symbols-outlined text-lg">remove</span></button>
+<input class="w-10 bg-transparent border-none text-center font-label font-bold text-primary p-0 focus:ring-0" readonly="" type="number" value="5"/>
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, 1)"><span class="material-symbols-outlined text-lg">add</span></button>
+</div>
+</div>
+<!-- Flush -->
+<div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between shadow-sm border border-surface-container">
+<div class="flex items-center gap-3">
+<div class="flex -space-x-1 shrink-0">
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-secondary text-[10px] font-bold">♥</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-secondary text-[10px] font-bold shadow-sm">♥</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-secondary text-[10px] font-bold shadow-md">♥</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-secondary text-[10px] font-bold shadow-lg">♥</div>
+</div>
+<span class="font-label font-medium text-on-surface-variant uppercase tracking-wider text-[10px]">Flush</span>
+</div>
+<div class="flex items-center bg-surface-container rounded-lg p-1">
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, -1)"><span class="material-symbols-outlined text-lg">remove</span></button>
+<input class="w-10 bg-transparent border-none text-center font-label font-bold text-primary p-0 focus:ring-0" readonly="" type="number" value="6"/>
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, 1)"><span class="material-symbols-outlined text-lg">add</span></button>
+</div>
+</div>
+<!-- Full House -->
+<div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between shadow-sm border border-surface-container">
+<div class="flex items-center gap-3">
+<div class="flex -space-x-1 shrink-0">
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface">A</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-sm">A</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-md">A</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-lg">8</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-xl">8</div>
+</div>
+<span class="font-label font-medium text-on-surface-variant uppercase tracking-wider text-[10px]">Full House</span>
+</div>
+<div class="flex items-center bg-surface-container rounded-lg p-1">
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, -1)"><span class="material-symbols-outlined text-lg">remove</span></button>
+<input class="w-10 bg-transparent border-none text-center font-label font-bold text-primary p-0 focus:ring-0" readonly="" type="number" value="7"/>
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, 1)"><span class="material-symbols-outlined text-lg">add</span></button>
+</div>
+</div>
+<!-- Four of Kind -->
+<div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between shadow-sm border border-surface-container">
+<div class="flex items-center gap-3">
+<div class="flex -space-x-1 shrink-0">
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface">Q</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-sm">Q</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-md">Q</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-lg">Q</div>
+</div>
+<span class="font-label font-medium text-on-surface-variant uppercase tracking-wider text-[10px]">Four of Kind</span>
+</div>
+<div class="flex items-center bg-surface-container rounded-lg p-1">
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, -1)"><span class="material-symbols-outlined text-lg">remove</span></button>
+<input class="w-10 bg-transparent border-none text-center font-label font-bold text-primary p-0 focus:ring-0" readonly="" type="number" value="8"/>
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, 1)"><span class="material-symbols-outlined text-lg">add</span></button>
+</div>
+</div>
+<!-- Royal Flush Jackpot -->
+<div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between shadow-sm border border-surface-container">
+<div class="flex items-center gap-3">
+<div class="flex -space-x-1 shrink-0">
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface">10</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-sm">J</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-md">Q</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-lg">K</div>
+<div class="w-4 h-6 bg-white border border-outline-variant rounded-[1px] flex items-center justify-center text-[8px] font-bold text-on-surface shadow-xl">A</div>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[14px]" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label font-medium text-on-surface-variant uppercase tracking-wider text-[10px]">Royal Flush Jackpot</span>
+</div>
+</div>
+<div class="flex items-center bg-surface-container rounded-lg p-1">
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, -1)"><span class="material-symbols-outlined text-lg">remove</span></button>
+<input class="w-10 bg-transparent border-none text-center font-label font-bold text-primary p-0 focus:ring-0" readonly="" type="number" value="12"/>
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-variant rounded-md transition-colors" onclick="updateVal(this, 1)"><span class="material-symbols-outlined text-lg">add</span></button>
+</div>
+</div>
+</div>
+</section>
+<div class="h-10"></div>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-[#fcfef1]/90 dark:bg-stone-900/90 backdrop-blur-xl flex justify-around items-center px-4 pb-6 pt-2 shadow-[0_-4px_20px_rgba(85,90,57,0.06)] rounded-t-2xl">
+<!-- Settings (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#edefe2] dark:bg-stone-800 text-[#e85c57] rounded-xl px-4 py-2 transition-transform duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-['Public_Sans'] text-[10px] font-medium uppercase tracking-widest">Settings</span>
+</a>
+<!-- Play (Inactive - Icon Only) -->
+<a class="flex flex-col items-center justify-center text-[#47473e] dark:text-stone-400 px-4 py-2 hover:text-[#555a39] transition-colors" href="#">
+<span class="material-symbols-outlined text-3xl" data-icon="casino">casino</span>
+</a>
+<!-- High Score (Inactive) -->
+<a class="flex flex-col items-center justify-center text-[#47473e] dark:text-stone-400 px-4 py-2 hover:text-[#555a39] transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="emoji_events">emoji_events</span>
+<span class="font-['Public_Sans'] text-[10px] font-medium uppercase tracking-widest">High Score</span>
+</a>
+</nav>
+</body></html>

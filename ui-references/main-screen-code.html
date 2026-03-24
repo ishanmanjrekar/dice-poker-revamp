@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dice Poker - Modern Parlor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&amp;family=Public+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ad3130",
+                        "secondary": "#ad3130",
+                        "background": "#fcfef1",
+                        "surface": "#fcfef1",
+                        "on-surface": "#555a39",
+                        "on-surface-variant": "#78786d",
+                        "outline": "#78786d",
+                        "outline-variant": "#c8c7ba",
+                        "surface-container": "#edefe2",
+                        "surface-container-low": "#f3f5e8",
+                        "surface-container-high": "#e7e9dd",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "olive": "#555a39",
+                        "terracotta": "#ad3130"
+                    },
+                    fontFamily: {
+                        "headline": ["Be Vietnam Pro", "sans-serif"],
+                        "body": ["Be Vietnam Pro", "sans-serif"],
+                        "label": ["Public Sans", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .suit-spades, .suit-clubs { color: #555a39; }
+        .suit-hearts, .suit-diamonds { color: #ad3130; }
+        
+        .traditional-spade {
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C10.5 4.8 6 10 6 14C6 16.2 7.8 18 10 18C10.5 18 11 17.9 11.5 17.7L10 22H14L12.5 17.7C13 17.9 13.5 18 14 18C16.2 18 18 16.2 18 14C18 10 13.5 4.8 12 2Z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C10.5 4.8 6 10 6 14C6 16.2 7.8 18 10 18C10.5 18 11 17.9 11.5 17.7L10 22H14L12.5 17.7C13 17.9 13.5 18 14 18C16.2 18 18 16.2 18 14C18 10 13.5 4.8 12 2Z'/%3E%3C/svg%3E");
+            mask-repeat: no-repeat; -webkit-mask-repeat: no-repeat; background-color: currentColor; display: inline-block;
+        }
+
+        .card-shadow {
+            box-shadow: 0 4px 12px -2px rgba(85, 90, 57, 0.12), 0 2px 4px -1px rgba(85, 90, 57, 0.08);
+        }
+        .deck-card {
+            width: 58px; height: 84px;
+        }
+        .playing-card-hand {
+            width: 76px; height: 112px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen flex flex-col">
+<!-- Header -->
+<header class="flex justify-between items-start w-full px-6 pt-10 pb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface text-3xl" style="font-variation-settings: 'FILL' 0, 'wght' 400;">casino</span>
+<h1 class="text-2xl font-bold text-on-surface font-headline tracking-tight">Dice Poker</h1>
+</div>
+<div class="text-right">
+<div class="text-[11px] font-bold font-headline text-on-surface-variant uppercase tracking-wider">SCORE: 2450</div>
+<div class="text-[11px] font-bold font-headline text-terracotta uppercase tracking-wider mt-0.5">HANDS: 08/15</div>
+</div>
+</header>
+<main class="flex-1 px-4 max-w-lg mx-auto w-full space-y-8 pb-32">
+<!-- Decks Section -->
+<section class="space-y-4">
+<h2 class="text-[10px] font-bold font-label text-on-surface-variant tracking-[0.2em] px-1 uppercase opacity-60">DECKS</h2>
+<div class="flex justify-between gap-2 px-1">
+<div class="deck-card bg-surface-container-high/40 rounded-lg flex items-center justify-center border border-outline-variant/30">
+<span class="text-xs font-mono opacity-30">×</span>
+</div>
+<div class="deck-card bg-surface-container-lowest rounded-lg card-shadow flex flex-col items-center justify-center border border-outline-variant/30">
+<span class="text-sm font-black font-headline">A</span>
+<div class="w-3.5 h-3.5 traditional-spade suit-spades mt-0.5"></div>
+</div>
+<div class="deck-card bg-surface-container-lowest rounded-lg card-shadow flex flex-col items-center justify-center border border-outline-variant/30">
+<span class="text-sm font-black font-headline">A</span>
+<div class="w-3.5 h-3.5 traditional-spade suit-spades mt-0.5"></div>
+</div>
+<div class="deck-card bg-surface-container-lowest rounded-lg card-shadow flex flex-col items-center justify-center border border-outline-variant/30">
+<span class="text-sm font-black font-headline">A</span>
+<div class="w-3.5 h-3.5 traditional-spade suit-spades mt-0.5"></div>
+</div>
+<div class="deck-card bg-surface-container-high/40 rounded-lg flex items-center justify-center border border-outline-variant/30">
+<span class="text-xs font-mono opacity-30">×</span>
+</div>
+<div class="deck-card bg-surface-container-lowest rounded-lg card-shadow flex flex-col items-center justify-center border border-outline-variant/30">
+<span class="text-sm font-black font-headline">A</span>
+<div class="w-3.5 h-3.5 traditional-spade suit-spades mt-0.5"></div>
+</div>
+</div>
+</section>
+<!-- Hand Section -->
+<section class="space-y-4 pt-2">
+<h2 class="text-[10px] font-bold font-label text-on-surface-variant tracking-[0.2em] px-1 uppercase opacity-60">CARDS IN YOUR HAND</h2>
+<div class="flex flex-wrap justify-center gap-3">
+<div class="playing-card-hand bg-surface-container-lowest rounded-xl flex flex-col items-center justify-center card-shadow border-2 border-terracotta relative">
+<span class="text-3xl font-black font-headline">A</span>
+<div class="w-6 h-6 traditional-spade suit-spades mt-1"></div>
+</div>
+<div class="playing-card-hand bg-surface-container-lowest rounded-xl flex flex-col items-center justify-center card-shadow border-2 border-terracotta relative">
+<span class="text-3xl font-black font-headline">A</span>
+<div class="w-6 h-6 traditional-spade suit-spades mt-1"></div>
+</div>
+<div class="playing-card-hand bg-surface-container-high/30 rounded-xl flex items-center justify-center border border-outline-variant/20">
+<span class="material-symbols-outlined text-outline-variant text-4xl">hourglass_empty</span>
+</div>
+<div class="playing-card-hand bg-surface-container-high/30 rounded-xl flex items-center justify-center border border-outline-variant/20">
+<span class="material-symbols-outlined text-outline-variant text-4xl">hourglass_empty</span>
+</div>
+<div class="playing-card-hand bg-surface-container-high/30 rounded-xl flex items-center justify-center border border-outline-variant/20">
+<span class="material-symbols-outlined text-outline-variant text-4xl">hourglass_empty</span>
+</div>
+<div class="playing-card-hand bg-surface-container-high/30 rounded-xl flex items-center justify-center border border-outline-variant/20">
+<span class="material-symbols-outlined text-outline-variant text-4xl">hourglass_empty</span>
+</div>
+<div class="playing-card-hand bg-surface-container-high/30 rounded-xl flex items-center justify-center border border-outline-variant/20">
+<span class="material-symbols-outlined text-outline-variant text-4xl">hourglass_empty</span>
+</div>
+</div>
+</section>
+<!-- Actions -->
+<section class="space-y-4 flex flex-col items-center pt-2">
+<div class="bg-surface-container-high/50 rounded-full px-10 py-1.5 inline-flex items-center gap-1.5">
+<span class="text-[10px] font-bold font-label text-on-surface-variant uppercase tracking-widest opacity-80">SELECTED HAND RANK:</span>
+<span class="text-[10px] font-bold font-label text-terracotta uppercase tracking-widest">PAIR</span>
+</div>
+<button class="w-full py-6 bg-terracotta text-on-primary rounded-2xl font-headline font-extrabold text-base tracking-[0.1em] uppercase shadow-xl shadow-terracotta/25 active:scale-[0.98] transition-all">
+                PLAY SELECTED HAND
+            </button>
+</section>
+<!-- Roll Controls -->
+<section class="bg-surface-container-low/60 rounded-3xl p-6 flex items-center justify-between shadow-sm border border-outline-variant/10">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold font-label text-on-surface-variant uppercase tracking-[0.15em] opacity-60">ROLLS REMAINING</span>
+<div class="flex items-baseline gap-1.5 mt-1">
+<span class="text-4xl font-headline font-bold text-on-surface leading-none">03</span>
+<span class="text-sm font-headline font-medium text-outline-variant opacity-50">/ 05</span>
+</div>
+</div>
+<button class="bg-terracotta text-on-primary px-7 py-3 rounded-2xl flex flex-col items-center justify-center shadow-xl shadow-terracotta/30 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-2xl mb-0.5" style="font-variation-settings: 'FILL' 1;">casino</span>
+<span class="text-[10px] font-black font-headline tracking-[0.2em] uppercase leading-none">ROLL</span>
+</button>
+</section>
+<!-- Match Log -->
+<section class="space-y-4 pt-4">
+<div class="bg-surface-container-high/30 rounded-3xl overflow-hidden p-2">
+<div class="px-6 py-4">
+<h2 class="text-[10px] font-bold font-label text-on-surface-variant tracking-[0.2em] uppercase opacity-60">MATCH LOG</h2>
+</div>
+<div class="divide-y divide-outline-variant/10 px-4 pb-4 overflow-y-auto max-h-60">
+<div class="py-4 flex justify-between items-center px-2">
+<span class="text-sm font-label font-medium text-on-surface">Played Full House</span>
+<span class="text-sm font-label font-bold text-terracotta">+450</span>
+</div>
+<div class="py-4 flex justify-between items-center px-2">
+<span class="text-sm font-label font-medium text-on-surface">Discarded 2 Cards</span>
+<span class="text-[11px] font-label font-medium text-on-surface-variant opacity-60">Round 4</span>
+</div>
+<div class="py-4 flex justify-between items-center px-2">
+<span class="text-sm font-label font-medium text-on-surface">Played Three of a Kind</span>
+<span class="text-sm font-label font-bold text-terracotta">+180</span>
+</div>
+<div class="py-4 flex justify-between items-center px-2">
+<span class="text-sm font-label font-medium text-on-surface-variant opacity-60">Game Started</span>
+<span class="text-[11px] font-label font-medium text-on-surface-variant opacity-50">12:05 PM</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-8 pt-4 bg-background/95 backdrop-blur-md border-t border-outline-variant/10">
+<button class="flex flex-col items-center justify-center text-on-surface group gap-1">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">settings</span>
+<span class="text-[10px] font-bold font-label uppercase tracking-widest">SETTINGS</span>
+</button>
+<button class="bg-terracotta text-on-primary w-16 h-14 rounded-2xl flex items-center justify-center shadow-2xl shadow-terracotta/40 active:scale-90 transition-all">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">casino</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface group gap-1">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">bar_chart</span>
+<span class="text-[10px] font-bold font-label uppercase tracking-widest whitespace-nowrap">HIGH SCORE</span>
+</button>
+</nav>
+</body></html>
