@@ -1,4 +1,5 @@
 import React from 'react';
+import { Dices } from 'lucide-react';
 
 interface ScoreBoardProps {
   score: number;
@@ -8,31 +9,24 @@ interface ScoreBoardProps {
 
 const ScoreBoard: React.FC<ScoreBoardProps> = ({ score, handsPlayed, totalHands }) => {
   return (
-    <header className="w-full flex justify-between items-start mb-8 border-b border-parlor-primary/5 pb-4">
-       {/* Current Score */}
-       <div className="flex flex-col">
-          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-parlor-on-surface-variant">
-            Total Score
-          </span>
-          <span className="text-4xl font-display font-bold text-parlor-primary tracking-tighter">
-            {score.toLocaleString()}
-          </span>
-       </div>
+    <header className="flex justify-between items-start w-full mb-8">
+      {/* Brand Header */}
+      <div className="flex items-center gap-2">
+        <Dices className="text-parlor-primary w-8 h-8" strokeWidth={1.5} />
+        <h1 className="text-2xl font-bold text-parlor-primary font-display tracking-tight leading-none">
+          Dice Poker
+        </h1>
+      </div>
 
-       {/* Hand Count Progress */}
-       <div className="flex flex-col items-end">
-          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-parlor-on-surface-variant">
-            Hands
-          </span>
-          <div className="flex items-baseline gap-1">
-             <span className="text-4xl font-display font-bold text-parlor-primary tracking-tighter">
-               {handsPlayed}
-             </span>
-             <span className="text-xl font-display font-bold text-parlor-primary/20">
-               / {totalHands}
-             </span>
-          </div>
-       </div>
+      {/* Stats Area */}
+      <div className="text-right flex flex-col items-end">
+        <div className="text-[11px] font-bold font-display text-parlor-on-surface-variant uppercase tracking-wider">
+          SCORE: {score.toLocaleString()}
+        </div>
+        <div className="text-[11px] font-bold font-display text-parlor-secondary uppercase tracking-wider mt-1">
+          HANDS: {handsPlayed.toString().padStart(2, '0')}/{totalHands}
+        </div>
+      </div>
     </header>
   );
 };

@@ -6,27 +6,18 @@ interface LayoutProps {
 
 const ModernParlorLayout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="relative min-h-screen w-full bg-parlor-surface text-parlor-primary selection:bg-parlor-secondary/20 overflow-hidden font-sans">
-      {/* Texture Overlay (Simulated Paper) */}
-      <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.03] mix-blend-multiply transition-opacity duration-700 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]"></div>
+    <div className="relative min-h-screen w-full bg-parlor-surface text-parlor-primary selection:bg-parlor-secondary/20 flex flex-col items-center justify-center overflow-hidden font-sans">
+      {/* Texture Overlay */}
+      <div className="pointer-events-none fixed inset-0 z-[100] opacity-[0.03] mix-blend-multiply transition-opacity duration-700 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]"></div>
 
-      {/* Main Container - Optimized for 9:16 Portrait */}
-      <div className="mx-auto flex h-full min-h-screen w-full max-w-[430px] flex-col bg-parlor-surface-low shadow-2xl transition-all duration-500 ease-in-out md:my-4 md:min-h-[92vh] md:rounded-[40px] md:border-8 md:border-parlor-primary/5">
+      {/* Main Container - Strict 9:16 Aspect Ratio */}
+      <div className="relative mx-auto flex aspect-[9/16] h-full max-h-[100dvh] w-auto flex-col bg-parlor-surface shadow-2xl transition-all duration-500 ease-in-out md:max-h-[92vh] md:my-[4vh] md:rounded-[40px] md:border-8 md:border-parlor-primary/5 overflow-hidden">
         
-        {/* Editorial Content Wrapper */}
-        <div className="flex flex-1 flex-col p-6 pb-safe pt-safe">
+        {/* Content Wrapper */}
+        <div className="flex-1 overflow-hidden">
           {children}
         </div>
 
-        {/* Tactile Navigation or Footer Area */}
-        <footer className="w-full px-6 py-4 flex items-center justify-between border-t border-parlor-primary/5">
-           <span className="text-[10px] font-mono uppercase tracking-[0.2em] opacity-40">
-             Dice Poker / Modern Parlor
-           </span>
-           <div className="flex gap-4">
-             {/* Future: Settings / Info icons */}
-           </div>
-        </footer>
       </div>
     </div>
   );

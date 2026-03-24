@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { GameState, Card, Deck } from '../types/game';
+import { GameState, Card, Deck, ScreenType } from '../types/game';
 import { initializeBoard, shuffle } from './deck';
 import { evaluateHand } from './poker-engine';
 import gameConfig from '../../game-config.json';
@@ -9,9 +9,11 @@ interface GameActions {
   playHand: (selectedCards: Card[]) => void;
   resetGame: () => void;
   toggleCardSelection: (cardId: string) => void;
+  setScreen: (screen: ScreenType) => void;
 }
 
 const initialState: GameState = {
+  currentScreen: 'game',
   decks: [],
   hand: [],
   rollsRemaining: gameConfig.maxRolls,
@@ -94,5 +96,9 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
   toggleCardSelection: (cardId: string) => {
     // Selection state is usually handled in the View layer (local state) 
     // or as a derived state, but we could add an 'isSelected' flag to Card if needed.
+  },
+
+  setScreen: (screen: ScreenType) => {
+    set({ currentScreen: screen });
   }
 }));

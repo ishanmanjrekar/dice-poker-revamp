@@ -10,7 +10,7 @@ interface HandAreaProps {
 
 const HandArea: React.FC<HandAreaProps> = ({ hand, selectedIds, onToggleSelection }) => {
   return (
-    <div className="w-full h-full flex flex-col gap-6 py-4 px-2 select-none">
+    <div className="w-full flex-1 flex flex-col gap-6 py-4 px-2 select-none overflow-y-auto scrollbar-hide">
        {/* Instruction Label */}
        <div className="text-center">
          <span className="text-[10px] font-mono uppercase tracking-widest text-parlor-on-surface-variant font-bold">
@@ -19,9 +19,9 @@ const HandArea: React.FC<HandAreaProps> = ({ hand, selectedIds, onToggleSelectio
        </div>
 
        {/* 2-Row Layout: 4 top, 3 bottom */}
-       <div className="flex flex-col gap-8 items-center">
+       <div className="flex flex-col gap-4 items-center">
           {/* Row 1 (Max 4 cards) */}
-          <div className="flex gap-4 justify-center min-h-[110px]">
+          <div className="flex gap-4 justify-center min-h-[90px]">
              {hand.slice(0, 4).map(card => (
                <Card 
                  key={card.id} 
@@ -37,7 +37,7 @@ const HandArea: React.FC<HandAreaProps> = ({ hand, selectedIds, onToggleSelectio
           </div>
 
           {/* Row 2 (Max 3 cards) */}
-          <div className="flex gap-4 justify-center min-h-[110px]">
+          <div className="flex gap-4 justify-center min-h-[90px]">
              {hand.slice(4, 7).map(card => (
                <Card 
                  key={card.id} 

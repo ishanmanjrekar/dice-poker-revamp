@@ -10,7 +10,10 @@ export interface Deck {
   cards: Card[];
 }
 
+export type ScreenType = 'game' | 'settings' | 'highscore';
+
 export interface GameState {
+  currentScreen: ScreenType;
   decks: Deck[];
   hand: Card[];
   rollsRemaining: number;

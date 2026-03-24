@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useGameStore } from '../../core/state';
 import ScoreBoard from './ScoreBoard';
 import DeckSpot from './DeckSpot';
 import HandArea from './HandArea';
 import Die from './Die';
+import MatchLog from './MatchLog';
 import { HapticController } from '../../core/sensory-feedback';
+import { evaluateHand } from '../../core/poker-engine';
 import gameConfig from '../../../game-config.json';
+import { Dices } from 'lucide-react';
 
 const GameBoard: React.FC = () => {
   const {
@@ -15,6 +18,7 @@ const GameBoard: React.FC = () => {
     handsPlayed,
     rollsRemaining,
     gameStatus,
+    history,
     rollDice,
     playHand,
     resetGame
@@ -24,7 +28,15 @@ const GameBoard: React.FC = () => {
   const [isRolling, setIsRolling] = useState(false);
   const [lastDieValue, setLastDieValue] = useState(1);
 
-  // Initialize game on mount
+  // Derived: Current Hand Ranking
+  const selectedCards = useMemo(() => 
+    hand.filter(c => selectedIds.includes(c.id)), 
+  [hand, selectedIds]);
+
+  const handRank = useMemo(() => 
+    evaluateHand(selectedCards).handName, 
+  [selectedCards]);
+
   useEffect(() => {
     if (gameStatus === 'idle') {
       resetGame();
@@ -37,7 +49,6 @@ const GameBoard: React.FC = () => {
     setIsRolling(true);
     HapticController.trigger('light');
     
-    // Simulate dice roll animation duration
     setTimeout(() => {
       const newValue = Math.floor(Math.random() * 6) + 1;
       setLastDieValue(newValue);
@@ -56,74 +67,112 @@ const GameBoard: React.FC = () => {
 
   const handlePlayHand = () => {
     if (selectedIds.length === 0) return;
-    
-    const cardsToPlay = hand.filter(c => selectedIds.includes(c.id));
-    playHand(cardsToPlay);
+    playHand(selectedCards);
     setSelectedIds([]);
     HapticController.trigger('success');
   };
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Header / Score */}
-      <ScoreBoard 
-        score={totalScore} 
-        handsPlayed={handsPlayed} 
-        totalHands={gameConfig.handLimit} 
-      />
-
-      {/* Decks Section */}
-      <div className="grid grid-cols-6 gap-2 mb-10 mt-2">
-         {decks.map(deck => (
-            <DeckSpot 
-              key={deck.id} 
-              deck={deck} 
-              isClickable={false} // Drawing is triggered by Die Roll
-            />
-         ))}
+    <div className="flex flex-col h-full bg-parlor-surface">
+      {/* 1. Brand Header */}
+      <div className="px-6 pt-4 pb-2 shrink-0">
+        <ScoreBoard 
+          score={totalScore} 
+          handsPlayed={handsPlayed} 
+          totalHands={gameConfig.handLimit} 
+        />
       </div>
 
-      {/* Action Area: Die + Roll Button */}
-      <div className="flex items-center justify-between mb-8 px-2">
-         <Die value={lastDieValue} isRolling={isRolling} />
-         
-         <div className="flex flex-col items-end gap-2">
+      {/* Main Scrollable Content */}
+      <main className="flex-1 px-4 max-w-lg mx-auto w-full space-y-3 pb-24 overflow-y-auto scrollbar-hide">
+        
+        {/* 2. Decks Section */}
+        <section className="space-y-2">
+          <h2 className="text-[10px] font-bold font-sans text-parlor-on-surface-variant tracking-[0.2em] px-1 uppercase opacity-60">
+            DECKS
+          </h2>
+          <div className="flex justify-between gap-1 px-1 flex-nowrap overflow-x-hidden">
+             {decks.map(deck => (
+                <DeckSpot 
+                  key={deck.id} 
+                  deck={deck} 
+                  isClickable={false}
+                />
+             ))}
+          </div>
+        </section>
+
+        {/* 3. Hand Section */}
+        <section className="space-y-2 pt-0">
+          <h2 className="text-[10px] font-bold font-sans text-parlor-on-surface-variant tracking-[0.2em] px-1 uppercase opacity-60">
+            CARDS IN YOUR HAND
+          </h2>
+          <HandArea 
+            hand={hand} 
+            selectedIds={selectedIds} 
+            onToggleSelection={handleToggleSelection} 
+          />
+        </section>
+
+        {/* 4. Actions: Rank Indicator + Play Button */}
+        <section className="space-y-4 flex flex-col items-center pt-2">
+          <div className="bg-parlor-surface-container/50 rounded-full px-10 py-1.5 inline-flex items-center gap-1.5 border border-parlor-primary/5">
+            <span className="text-[10px] font-bold font-sans text-parlor-on-surface-variant uppercase tracking-widest opacity-80">
+              SELECTED HAND RANK:
+            </span>
+            <span className="text-[10px] font-bold font-sans text-parlor-secondary uppercase tracking-widest">
+              {selectedIds.length > 0 ? handRank : 'NONE'}
+            </span>
+          </div>
+          
+          <button
+            onClick={handlePlayHand}
+            disabled={selectedIds.length === 0}
+            className="w-full py-4 bg-parlor-secondary text-white rounded-2xl font-display font-extrabold text-base tracking-[0.1em] uppercase shadow-xl shadow-parlor-secondary/25 active:scale-[0.98] transition-all disabled:opacity-20 disabled:grayscale"
+          >
+            PLAY SELECTED HAND
+          </button>
+        </section>
+
+        {/* 5. Roll Controls */}
+        <section className="bg-parlor-surface-container/40 rounded-3xl p-4 flex items-center justify-between shadow-sm border border-parlor-primary/5">
+          <div className="flex flex-col">
+            <span className="text-[10px] font-bold font-sans text-parlor-on-surface-variant uppercase tracking-[0.15em] opacity-60">
+              ROLLS REMAINING
+            </span>
+            <div className="flex items-baseline gap-1.5 mt-1">
+              <span className="text-4xl font-display font-bold text-parlor-primary leading-none">
+                {rollsRemaining.toString().padStart(2, '0')}
+              </span>
+              <span className="text-sm font-display font-medium text-parlor-primary/30">
+                / {gameConfig.maxRolls.toString().padStart(2, '0')}
+              </span>
+            </div>
+          </div>
+          
+          <div className="flex gap-4 items-center">
+            <Die value={lastDieValue} isRolling={isRolling} />
             <button
               onClick={handleRoll}
               disabled={rollsRemaining <= 0 || isRolling || hand.length >= gameConfig.handSize}
-              className="px-10 py-3 bg-parlor-primary text-parlor-surface rounded-xl font-display font-bold uppercase tracking-widest active:scale-95 transition-all disabled:opacity-20 disabled:grayscale"
+              className="bg-parlor-secondary text-white px-7 py-3 rounded-2xl flex flex-col items-center justify-center shadow-xl shadow-parlor-secondary/30 active:scale-95 transition-all disabled:opacity-20"
             >
-              ROLL
+              <Dices className="w-6 h-6 mb-0.5" strokeWidth={2} />
+              <span className="text-[10px] font-black font-display tracking-[0.2em] uppercase leading-none">
+                ROLL
+              </span>
             </button>
-            <span className="text-[10px] font-mono font-bold text-parlor-on-surface-variant uppercase tracking-widest">
-              {rollsRemaining} Rolls Left
-            </span>
-         </div>
-      </div>
+          </div>
+        </section>
 
-      {/* Player Hand Area */}
-      <div className="flex-1 min-h-[300px]">
-         <HandArea 
-           hand={hand} 
-           selectedIds={selectedIds} 
-           onToggleSelection={handleToggleSelection} 
-         />
-      </div>
+        {/* 6. Match Log */}
+        <MatchLog history={history} />
 
-      {/* Global Play Button */}
-      <div className="mt-auto px-4 py-6">
-         <button
-           onClick={handlePlayHand}
-           disabled={selectedIds.length === 0}
-           className="w-full py-5 bg-parlor-secondary text-white rounded-2xl font-display font-bold text-lg uppercase tracking-[0.2em] shadow-parlor active:scale-[0.98] transition-all disabled:opacity-10"
-         >
-           Play Selected Hand
-         </button>
-      </div>
+      </main>
 
       {/* End Game Overlay */}
       {gameStatus === 'ended' && (
-        <div className="absolute inset-0 z-50 bg-parlor-primary/95 flex flex-col items-center justify-center p-8 text-center text-parlor-surface animate-in fade-in duration-700">
+        <div className="absolute inset-0 z-[60] bg-parlor-primary/95 flex flex-col items-center justify-center p-8 text-center text-parlor-surface animate-in fade-in duration-700">
            <h2 className="text-6xl font-display font-bold mb-4">FIN</h2>
            <p className="text-parlor-surface/60 font-mono uppercase tracking-widest mb-12">Total Score</p>
            <div className="text-7xl font-display font-bold mb-16">{totalScore.toLocaleString()}</div>
