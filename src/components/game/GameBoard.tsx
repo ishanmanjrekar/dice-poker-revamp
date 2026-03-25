@@ -91,7 +91,7 @@ const GameBoard: React.FC = () => {
           <h2 className="text-[10px] font-bold font-sans text-parlor-on-surface-variant tracking-[0.2em] px-1 uppercase opacity-60">
             DECKS
           </h2>
-          <div className="flex justify-between gap-1 px-1 flex-nowrap overflow-x-hidden">
+          <div className="flex justify-between gap-1 px-1 flex-nowrap">
              {decks.map(deck => (
                 <DeckSpot 
                   key={deck.id} 

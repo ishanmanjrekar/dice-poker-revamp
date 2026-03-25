@@ -44,6 +44,8 @@ All cards are composite objects rendered in 5 functional layers (L0-L4):
 *   **Aspect Ratio:** 9:16 (Portrait).
 *   **Header:** Balanced Score on left, Hands count on right. Vertical stacking of labels.
 *   **Decks:** 6 narrow piles arranged horizontally at the top.
+    *   **Badges:** Use a Terracotta red dot notification badge on active decks to show the remaining card count. Hide on empty decks.
+    *   **Labels:** Display "DECK X" below each deck stack in uppercase Deep Olive.
 *   **The Hand:**
     *   Max 7 cards.
     *   Arranged in a wrapping grid (2 rows: 4 top, 3 bottom) to maximize card size on small screens.
