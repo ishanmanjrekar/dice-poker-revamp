@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '../../core/state';
 import ScoreBoard from './ScoreBoard';
 import DeckSpot from './DeckSpot';
@@ -19,6 +20,7 @@ const GameBoard: React.FC = () => {
     rollsRemaining,
     gameStatus,
     history,
+    reshufflingDecks,
     rollDice,
     playHand,
     resetGame
@@ -189,6 +191,25 @@ const GameBoard: React.FC = () => {
            </button>
         </div>
       )}
+
+      {/* Reshuffling Overlay */}
+      <AnimatePresence>
+        {gameStatus === 'reshuffling' && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 1.1, y: -40 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="absolute inset-0 z-[70] flex flex-col items-center justify-center pointer-events-none"
+          >
+            <div className="bg-parlor-surface/95 px-8 py-4 rounded-xl shadow-2xl border border-parlor-primary/10 backdrop-blur-sm text-center">
+              <span className="text-2xl sm:text-3xl font-display font-black tracking-[0.2em] text-parlor-primary uppercase">
+                Reshuffling Deck {reshufflingDecks.join(' & ')}
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

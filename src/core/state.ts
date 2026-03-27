@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { GameState, Card, Deck, ScreenType } from '../types/game';
-import { initializeBoard, shuffle } from './deck';
+import { initializeBoard, shuffle, refillEmptyDecks } from './deck';
 import { evaluateHand } from './poker-engine';
 import gameConfig from '../../game-config.json';
 
@@ -16,12 +16,14 @@ const initialState: GameState = {
   currentScreen: 'game',
   decks: [],
   hand: [],
+  discardPile: [],
   rollsRemaining: gameConfig.maxRolls,
   handsPlayed: 0,
   totalScore: 0,
   history: [],
   currentSkin: 'standard',
   gameStatus: 'idle',
+  reshufflingDecks: [],
 };
 
 export const useGameStore = create<GameState & GameActions>((set, get) => ({
@@ -44,36 +46,40 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
     const deckIndex = dieValue - 1;
     const targetDeck = decks[deckIndex];
 
-    if (!targetDeck || targetDeck.cards.length === 0) return;
+    if (!targetDeck) return;
 
-    const newDecks = [...decks];
-    const newDeckCards = [...targetDeck.cards];
-    const drawnCard = newDeckCards.pop()!;
-    
-    // Reveal new top card
-    if (newDeckCards.length > 0) {
-      newDeckCards[newDeckCards.length - 1] = { 
-        ...newDeckCards[newDeckCards.length - 1], 
-        isFaceUp: true 
-      };
-    }
+    let newDecks = [...decks];
 
-    newDecks[deckIndex] = { ...targetDeck, cards: newDeckCards };
+    if (targetDeck.cards.length === 0) {
+      newDecks[deckIndex] = { ...targetDeck, lastEmptyHitAt: Date.now() };
+      set({
+        decks: newDecks,
+        rollsRemaining: rollsRemaining - 1,
+      });
+    } else {
+      const newDeckCards = [...targetDeck.cards];
+      const drawnCard = newDeckCards.pop()!;
+      
+      // Reveal new top card
+      if (newDeckCards.length > 0) {
+        newDeckCards[newDeckCards.length - 1] = { 
+          ...newDeckCards[newDeckCards.length - 1], 
+          isFaceUp: true 
+        };
+      }
 
-    set({
-      decks: newDecks,
-      hand: [...hand, { ...drawnCard, isFaceUp: true }],
-      rollsRemaining: rollsRemaining - 1,
-    });
+      newDecks[deckIndex] = { ...targetDeck, cards: newDeckCards };
 
-    // Check if all decks are empty -> Reshuffle trigger
-    if (newDecks.every(d => d.cards.length === 0)) {
-       // Future: Trigger reshuffle logic
+      set({
+        decks: newDecks,
+        hand: [...hand, { ...drawnCard, isFaceUp: true }],
+        rollsRemaining: rollsRemaining - 1,
+      });
     }
   },
 
   playHand: (selectedCards: Card[]) => {
-    const { hand, totalScore, handsPlayed, history } = get();
+    const { hand, discardPile, totalScore, handsPlayed, history } = get();
     if (selectedCards.length === 0) return;
 
     const result = evaluateHand(selectedCards);
@@ -82,15 +88,45 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
 
     // Discard selected cards
     const newHand = hand.filter(c => !selectedCards.find(sc => sc.id === c.id));
+    const newDiscardPile = [...discardPile, ...selectedCards];
 
-    set({
-      hand: newHand,
-      totalScore: newTotalScore,
-      handsPlayed: newHandsPlayed,
-      rollsRemaining: gameConfig.maxRolls, // Reset rolls for next round
-      history: [...history, { ...result, timestamp: Date.now() }],
-      gameStatus: newHandsPlayed >= gameConfig.handLimit ? 'ended' : 'playing',
-    });
+    const { decks: currentDecks } = get();
+    const emptyDecksExists = currentDecks.some(d => d.cards.length === 0);
+
+    if (emptyDecksExists && newHandsPlayed < gameConfig.handLimit) {
+      const shuffledDiscards = shuffle(newDiscardPile);
+      const { newDecks, remainingDiscards, emptiedDeckIds } = refillEmptyDecks(currentDecks, shuffledDiscards);
+      
+      set({
+        hand: newHand,
+        discardPile: newDiscardPile,
+        totalScore: newTotalScore,
+        handsPlayed: newHandsPlayed,
+        rollsRemaining: gameConfig.maxRolls,
+        history: [...history, { ...result, timestamp: Date.now() }],
+        gameStatus: 'reshuffling',
+        reshufflingDecks: emptiedDeckIds
+      });
+
+      setTimeout(() => {
+         set({
+           decks: newDecks,
+           discardPile: remainingDiscards,
+           gameStatus: 'playing',
+           reshufflingDecks: []
+         });
+      }, 2000);
+    } else {
+      set({
+        hand: newHand,
+        discardPile: newDiscardPile,
+        totalScore: newTotalScore,
+        handsPlayed: newHandsPlayed,
+        rollsRemaining: gameConfig.maxRolls, // Reset rolls for next round
+        history: [...history, { ...result, timestamp: Date.now() }],
+        gameStatus: newHandsPlayed >= gameConfig.handLimit ? 'ended' : 'playing',
+      });
+    }
   },
 
   toggleCardSelection: (cardId: string) => {

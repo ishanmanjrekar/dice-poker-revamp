@@ -50,3 +50,27 @@ export function initializeBoard(): { decks: Deck[]; startingHand: Card[] } {
   
   return { decks, startingHand };
 }
+
+export function refillEmptyDecks(decks: Deck[], discardPile: Card[]): { newDecks: Deck[]; remainingDiscards: Card[]; emptiedDeckIds: number[] } {
+  const newDecks = [...decks];
+  const remainingCards = [...discardPile];
+  const emptiedDeckIds: number[] = [];
+
+  for (let i = 0; i < newDecks.length; i++) {
+    if (newDecks[i].cards.length === 0) {
+      emptiedDeckIds.push(newDecks[i].id);
+      // Give up to 8 cards to the exhausted deck
+      const refillAmount = Math.min(8, remainingCards.length);
+      const deckCards = remainingCards.splice(0, refillAmount);
+
+      // Format cards: only the top card is face up
+      const formattedCards = deckCards.map((c, index) => ({
+        ...c,
+        isFaceUp: index === deckCards.length - 1
+      }));
+      newDecks[i] = { ...newDecks[i], cards: formattedCards };
+    }
+  }
+
+  return { newDecks, remainingDiscards: remainingCards, emptiedDeckIds };
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from './Card';
 import { Deck } from '../../types/game';
 
@@ -10,6 +10,15 @@ interface DeckSpotProps {
 
 const DeckSpot: React.FC<DeckSpotProps> = ({ deck, onDraw, isClickable }) => {
   const topCard = deck.cards.length > 0 ? deck.cards[deck.cards.length - 1] : null;
+  const [isBlinking, setIsBlinking] = useState(false);
+
+  useEffect(() => {
+    if (deck.lastEmptyHitAt) {
+      setIsBlinking(true);
+      const timer = setTimeout(() => setIsBlinking(false), 600);
+      return () => clearTimeout(timer);
+    }
+  }, [deck.lastEmptyHitAt]);
 
   return (
     <div className="flex flex-col items-center gap-2 flex-shrink-0" style={{ zIndex: 20 - Number(deck.id), position: 'relative' }}>
@@ -43,8 +52,8 @@ const DeckSpot: React.FC<DeckSpotProps> = ({ deck, onDraw, isClickable }) => {
              />
            </div>
          ) : (
-           <div className="w-[58px] h-[84px] rounded-lg bg-parlor-surface-container-high/40 border border-parlor-on-surface-variant/30 flex items-center justify-center">
-              <span className="text-xs font-mono opacity-30 text-parlor-primary">×</span>
+           <div className={`w-[58px] h-[84px] rounded-lg flex items-center justify-center transition-all duration-200 ${isBlinking ? 'border-2 border-red-500 bg-red-500/10' : 'bg-parlor-surface-container-high/40 border border-parlor-on-surface-variant/30'}`}>
+              <span className={`text-xs font-mono opacity-30 ${isBlinking ? 'text-red-500 font-bold opacity-100' : 'text-parlor-primary'}`}>×</span>
            </div>
          )}
       </div>
