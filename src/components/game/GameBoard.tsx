@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '../../core/state';
-import ScoreBoard from './ScoreBoard';
+// Removed ScoreBoard import
 import DeckSpot from './DeckSpot';
 import HandArea from './HandArea';
 import Die from './Die';
@@ -80,16 +80,7 @@ const GameBoard: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-parlor-surface">
-      {/* 1. Brand Header */}
-      <div className="px-6 pt-4 pb-2 shrink-0">
-        <ScoreBoard 
-          score={totalScore} 
-          handsPlayed={handsPlayed} 
-          totalHands={gameConfig.handLimit} 
-        />
-      </div>
-
+    <div className="flex flex-col flex-1 bg-parlor-surface overflow-hidden pt-2">
       {/* Main Scrollable Content */}
       <main className="flex-1 px-4 max-w-lg mx-auto w-full space-y-3 pb-24 overflow-y-auto scrollbar-hide">
         

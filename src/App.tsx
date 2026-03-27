@@ -5,6 +5,7 @@ import GameBoard from './components/game/GameBoard';
 import SettingsScreen from './components/screens/SettingsScreen';
 import HighScoreScreen from './components/screens/HighScoreScreen';
 import BottomNav from './components/layout/BottomNav';
+import ScoreBoard from './components/game/ScoreBoard';
 import { useGameStore } from './core/state';
 
 const App: React.FC = () => {
@@ -18,6 +19,7 @@ const App: React.FC = () => {
 
   return (
     <ModernParlorLayout>
+      <ScoreBoard />
       {currentScreen === 'game' && <GameBoard />}
       {currentScreen === 'settings' && <SettingsScreen />}
       {currentScreen === 'highscore' && <HighScoreScreen />}
