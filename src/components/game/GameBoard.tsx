@@ -170,16 +170,52 @@ const GameBoard: React.FC = () => {
 
       {/* End Game Overlay */}
       {gameStatus === 'ended' && (
-        <div className="absolute inset-0 z-[60] bg-parlor-primary/95 flex flex-col items-center justify-center p-8 text-center text-parlor-surface animate-in fade-in duration-700">
-           <h2 className="text-6xl font-display font-bold mb-4">FIN</h2>
-           <p className="text-parlor-surface/60 font-mono uppercase tracking-widest mb-12">Total Score</p>
-           <div className="text-7xl font-display font-bold mb-16">{totalScore.toLocaleString()}</div>
-           <button 
-             onClick={() => resetGame()}
-             className="px-12 py-4 border-2 border-parlor-surface rounded-xl font-display font-bold uppercase tracking-widest hover:bg-parlor-surface hover:text-parlor-primary transition-all"
-           >
-             New Game
-           </button>
+        <div className="absolute inset-0 z-[60] bg-parlor-surface/95 backdrop-blur-md flex flex-col items-center justify-center px-6 animate-in fade-in duration-700">
+          <div className="w-full max-w-sm flex flex-col items-center text-center">
+            
+            <div className="mb-6 bg-parlor-surface-highest p-6 rounded-full inline-flex items-center justify-center">
+              <Dices className="text-parlor-primary w-12 h-12" strokeWidth={1.5} />
+            </div>
+            
+            <h2 className="font-display font-extrabold text-5xl text-parlor-primary tracking-tighter mb-2">
+              Game Over
+            </h2>
+            <p className="font-mono text-parlor-on-surface-variant uppercase tracking-[0.2em] text-xs mb-8">
+              The house always wins, but you did well.
+            </p>
+            
+            <div className="bg-white w-full p-8 rounded-xl shadow-parlor mb-10 relative overflow-hidden">
+              <div className="flex flex-col items-center relative z-10">
+                <div className="flex items-center gap-3 mb-1">
+                  <span className="font-mono text-parlor-on-surface-variant text-[11px] font-medium uppercase tracking-widest">
+                    Total Score
+                  </span>
+                </div>
+                <div className="font-display font-extrabold text-7xl text-parlor-primary tracking-tighter">
+                  {totalScore.toLocaleString()}
+                </div>
+              </div>
+              <div className="absolute -bottom-8 -right-8 opacity-5 rotate-12 z-0">
+                <Dices className="w-48 h-48" />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-4 w-full">
+              <button 
+                onClick={() => resetGame()} 
+                className="bg-parlor-secondary text-white font-display font-semibold py-4 rounded-xl shadow-[inset_0_2px_0_rgba(255,255,255,0.2)] hover:opacity-90 transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-sm"
+              >
+                New Game
+              </button>
+              
+              <button 
+                className="bg-parlor-surface-highest text-parlor-primary font-display font-semibold py-4 rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-sm"
+              >
+                High Scores
+              </button>
+            </div>
+
+          </div>
         </div>
       )}
 
