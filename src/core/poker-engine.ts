@@ -33,12 +33,14 @@ export function evaluateHand(cards: Card[]): ScoreResult {
   const counts = Object.values(rankCounts).sort((a, b) => b - a);
 
   let handName = 'High Card';
-  if (isStraight && isFlush && sortedCards[sortedCards.length - 1].rank === 'A') handName = 'Royal Flush';
-  else if (isStraight && isFlush) handName = 'Straight Flush';
+  const hasFiveCards = cards.length === 5;
+
+  if (hasFiveCards && isStraight && isFlush && sortedCards[sortedCards.length - 1].rank === 'A') handName = 'Royal Flush';
+  else if (hasFiveCards && isStraight && isFlush) handName = 'Straight Flush';
   else if (counts[0] === 4) handName = 'Four of a Kind';
-  else if (counts[0] === 3 && counts[1] === 2) handName = 'Full House';
-  else if (isFlush) handName = 'Flush';
-  else if (isStraight) handName = 'Straight';
+  else if (hasFiveCards && counts[0] === 3 && counts[1] === 2) handName = 'Full House';
+  else if (hasFiveCards && isFlush) handName = 'Flush';
+  else if (hasFiveCards && isStraight) handName = 'Straight';
   else if (counts[0] === 3) handName = 'Three of a Kind';
   else if (counts[0] === 2 && counts[1] === 2) handName = 'Two Pair';
   else if (counts[0] === 2) handName = 'One Pair';

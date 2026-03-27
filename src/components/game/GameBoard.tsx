@@ -60,9 +60,14 @@ const GameBoard: React.FC = () => {
 
   const handleToggleSelection = (id: string) => {
     HapticController.trigger('light');
-    setSelectedIds(prev => 
-      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
-    );
+    setSelectedIds(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(i => i !== id);
+      } else {
+        if (prev.length >= 5) return prev;
+        return [...prev, id];
+      }
+    });
   };
 
   const handlePlayHand = () => {
