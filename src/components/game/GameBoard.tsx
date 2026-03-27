@@ -11,6 +11,19 @@ import { evaluateHand } from '../../core/poker-engine';
 import gameConfig from '../../../game-config.json';
 import { Dices } from 'lucide-react';
 
+const GAME_OVER_QUOTES = [
+  "The house always wins, but you did well.",
+  "Not bad for someone who trusts small plastic cubes with their fate.",
+  "Fortune favors the bold, but mathematics favors the house.",
+  "A valiant effort against the unbreakable laws of probability.",
+  "The dice giveth, and the dice taketh away.",
+  "Your strategy was flawless. The dice simply disagreed.",
+  "Statistically speaking, that could have been much worse.",
+  "Don't blame the dealer — you were the one rolling the dice.",
+  "You know what they say: lucky at cards, terrible at rolling dice.",
+  "You almost had it. Almost.",
+];
+
 const GameBoard: React.FC = () => {
   const {
     decks,
@@ -34,6 +47,13 @@ const GameBoard: React.FC = () => {
   const selectedCards = useMemo(() => 
     hand.filter(c => selectedIds.includes(c.id)), 
   [hand, selectedIds]);
+
+  // Random quote picked once per game-over transition
+  const gameOverQuote = useMemo(
+    () => GAME_OVER_QUOTES[Math.floor(Math.random() * GAME_OVER_QUOTES.length)],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [gameStatus]
+  );
 
   const handRank = useMemo(() => 
     evaluateHand(selectedCards).handName, 
@@ -181,7 +201,7 @@ const GameBoard: React.FC = () => {
               Game Over
             </h2>
             <p className="font-mono text-parlor-on-surface-variant uppercase tracking-[0.2em] text-xs mb-8">
-              The house always wins, but you did well.
+              {gameOverQuote}
             </p>
             
             <div className="bg-white w-full p-8 rounded-xl shadow-parlor mb-10 relative overflow-hidden">
