@@ -46,7 +46,7 @@ const HandArea: React.FC<HandAreaProps> = ({ hand, selectedIds, onToggleSelectio
                  onClick={() => onToggleSelection(card.id)}
                />
              ))}
-             {hand.length < 7 && Array.from({ length: Math.max(0, 3 - (hand.length - 4)) }).map((_, i) => (
+             {Array.from({ length: Math.max(0, 3 - Math.max(0, hand.length - 4)) }).map((_, i) => (
                 <div key={`p2-${i}`} className="w-[70px] h-[100px] border border-dashed border-parlor-primary/10 rounded-lg" />
              ))}
           </div>
