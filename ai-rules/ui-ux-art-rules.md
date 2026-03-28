@@ -8,7 +8,10 @@ This document synthesizes the visual and interaction standards for the "Modern P
 *   **Separation:** Strictly avoid 1px solid borders for sectioning.
 *   **Technique:** Use **Tonal Layering**. Boundaries are defined by shifting background colors:
     *   `surface` (#fcfef1) -> `surface-container-low` (#f3f5e8) -> `surface-container` (#edefe2).
-*   **Depth:** achieved through "Ghost Shadows" (20px-40px blur, 4-6% opacity, tinted with `on-surface`) and **Glassmorphism** (`backdrop-blur: 12px`).
+*   **Aesthetic Accents**: 
+    - **Ghost Borders**: Use at `3% - 5%` opacity for hero card differentiation.
+    - **Placeholders**: Use `border-2` dashed outlines at `80%` opacity for empty card slots.
+*   **Depth:** achieved through "Ghost Shadows" (20px-40px blur, 4-8% opacity, tinted with `on-surface`) and **Glassmorphism** (`backdrop-blur: 16px`).
 
 ### Color Tokens
 *   **Primary/Accent:** Terracotta (#ad3130). Used for major CTAs, hand selection, and critical rank indicators.
@@ -42,17 +45,18 @@ All cards are composite objects rendered in 5 functional layers (L0-L4):
 ## 3. Interface Layout (iPhone 15 Optimized)
 
 *   **Aspect Ratio:** 9:16 (Portrait).
-*   **Header:** Balanced Score on left, Hands count on right. Vertical stacking of labels.
-*   **Decks:** 6 narrow piles arranged horizontally at the top.
-    *   **Badges:** Use a Terracotta red dot notification badge on active decks to show the remaining card count. Hide on empty decks.
-    *   **Labels:** Display "DECK X" below each deck stack in uppercase Deep Olive.
+*   **Section Headers**: Use Title Case, **Be Vietnam Pro Black** (12px), and extra top padding (`pt-6`) for clear section definitions.
+*   **Decks**: 6 narrow piles arranged horizontally at the top.
+    *   **Badges**: Use a Terracotta red dot notification badge on active decks to show the remaining card count. Hide on empty decks.
+    *   **Labels**: Display "Decks" (Title Case) below the section header in uppercase Deep Olive.
 *   **The Hand:**
     *   Max 7 cards.
     *   Arranged in a wrapping grid (2 rows: 4 top, 3 bottom) to maximize card size on small screens.
 *   **Primary Action Area:**
     *   Large, full-width "PLAY SELECTED HAND" button (Terracotta).
     *   Clear state indicating "ROLLS REMAINING" with a tactile "ROLL" button.
-*   **Match Log:** Contained in a `surface-container-high` card with rounded corners (24px) and subtle dividers (10% opacity).
+*   **Match Log:** Contained in a `surface-container-high` card with rounded corners (24px).
+*   **Game Over Overlay**: A full-screen `backdrop-blur-xl` modal with a massive Hero score card (`rounded-2.5rem`), **8xl** scoreboard typography, and prominent action buttons featuring system icons (`RotateCcw`, `BarChart2`).
 
 ---
 
@@ -66,7 +70,8 @@ All cards are composite objects rendered in 5 functional layers (L0-L4):
 ---
 
 ## 5. Dice & Interaction Assets
-*   **Dice:** Use custom SVGs located at `src/assets/dice/` (`dice-six-faces-[one-six].svg`).
-*   **Animation:** Use high-contrast color fills (Terracotta or Deep Olive) for the pips to ensure visibility against the parlor background.
+*   **Dice (Custom)**: Use custom SVGs located at `src/assets/dice/` (`dice-six-faces-[one-six].svg`).
+*   **System UI (Lucide)**: Use `Lucide-React` for all interactive system controls. Ensure thin strokes (1.2) for headers and heavier strokes (2.5) for primary action buttons.
+*   **Animation:** Use high-contrast color fills (Terracotta or Deep Olive) for pips to ensure visibility.
 *   **Haptics:** Trigger a "Tick" (10ms) on card selection and a "Success" vibration on hand play.
-*   **Accessibility:** All buttons must have a minimum touch target of `48px x 48px`, regardless of visual size.
+*   **Accessibility:** All buttons must have a minimum touch target of `48px x 48px`.

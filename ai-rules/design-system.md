@@ -34,7 +34,9 @@ The palette is rooted in earth tones and cream foundations, designed to reduce e
 * `surface-container`: #edefe2
 * `surface-container-highest`: #e1e4d7
 * `on-surface-variant`: #47473e (Subtle text/icons)
-* **Assets:** Custom suit icons are stored as high-res PNGs (`src/assets/suits/`), and dice faces are custom SVGs (`src/assets/dice/`).
+* **Assets & Icons**: 
+    - **Custom Game Assets**: Card suits use high-res PNGs (`src/assets/suits/`); dice faces use custom SVGs (`src/assets/dice/`).
+    - **System UI Icons**: Powering the "Modern Parlor" interface is `Lucide-React`. Use consistent, thin-stroke (1.2 - 1.5) icons like `Dice5`, `RotateCcw`, and `BarChart2` for overall system cohesion.
 
 ---
 
@@ -42,15 +44,18 @@ The palette is rooted in earth tones and cream foundations, designed to reduce e
 
 The typography scale is designed to feel like a high-end journal. We pair the modern functionality of **Be Vietnam Pro** with the precision of **Public Sans**.
 
-* **Display & Headlines (Be Vietnam Pro):** These are the "voice" of the brand. Large scale, tight letter-spacing, and bold weights create an authoritative editorial feel.
-* **Body (Be Vietnam Pro):** Chosen for its exceptional legibility. Even at smaller sizes, Be Vietnam Pro maintains the clean, inviting feel of the system.
-* **Data & Labels (Public Sans):** For data points, prices, or technical tags, we use a monospace-adjacent sans to provide a "clear-cut" sophisticated contrast to the softer body text.
+* **Display & Headlines (Be Vietnam Pro):** These are the "voice" of the brand. Use **ExtraBold** (800) or **Black** (900) with tight letter-spacing to create an authoritative editorial feel.
+* **Body (Be Vietnam Pro):** Chosen for its exceptional legibility. Even at smaller sizes, it maintains the clean, inviting feel.
+* **Data & Labels (Public Sans / Be Vietnam Pro Black):** Labels should be sharp and high-contrast. Use **Public Sans** for technical data or **Be Vietnam Pro Black** (all-caps with wide tracking) for high-end editorial labels.
 
 ### Key Scales
+* **Display Hero:** 5rem - 8rem / Be Vietnam Pro / Black (For Game Over/Major States)
 * **Display LG:** 3.5rem / Be Vietnam Pro / Bold
 * **Headline MD:** 1.75rem / Be Vietnam Pro / Semibold
 * **Body MD:** 0.875rem / Be Vietnam Pro / Regular
-* **Label MD:** 0.75rem / Public Sans / Medium (All Caps for categorical data)
+* **Label LG:** 15px / Be Vietnam Pro / Bold (For Rule Items/Settings)
+* **Label MD:** 12px / Be Vietnam Pro / Black (For Section Headers, All Caps, 0.25em tracking)
+* **Label SM:** 0.75rem / Public Sans / Medium (All Caps for categorical data/technical tags)
 
 ---
 
@@ -59,9 +64,9 @@ The typography scale is designed to feel like a high-end journal. We pair the mo
 We convey hierarchy through **Tonal Layering** rather than traditional structural lines.
 
 * **The Layering Principle:** Depth is achieved by "stacking" container tiers. Place a `surface-container-lowest` (#ffffff) card on a `surface-container-low` (#f3f5e8) section to create a soft, natural lift.
-* **Ambient Shadows:** When a floating effect is required (e.g., a modal or a primary button), shadows must be extra-diffused. Use a 20px–40px blur with an opacity of 4%–6%. The shadow color must be a tinted version of the `on-surface` color, never a generic grey.
-* **The "Ghost Border" Fallback:** If a border is required for accessibility, use the `outline-variant` token at 15% opacity. Never use 100% opaque, high-contrast borders.
-* **Tactile Radius:** All containers must use the **md (0.75rem / 12px)** or **lg (1rem / 16px)** roundedness to maintain the "inviting" characteristic.
+* **Ambient Shadows:** When a floating effect is required (e.g., a modal or a primary button), shadows must be extra-diffused. Use a 20px–40px blur with an opacity of 4%–8%. The shadow color must be a tinted version of the theme's core depth color.
+* **The "Ghost Border" Rule:** To maintain the "Modern Parlor" feel of paper-on-paper, use a very subtle `ring-1` at `3% - 5%` opacity for card differentiation. Never use 100% opaque, high-contrast borders for standard sectioning.
+* **Tactile Radius:** Standard containers use **md (12px)** or **lg (16px)**. Hero elements (e.g., the Game Over score card) use **Hero (2.5rem / 40px)** for a modern, distinct silhouette.
 
 ---
 

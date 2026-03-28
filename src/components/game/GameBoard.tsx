@@ -44,11 +44,13 @@ const GameBoard: React.FC = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isRolling, setIsRolling] = useState(false);
   const [lastDieValue, setLastDieValue] = useState(1);
+  const [tooltip, setTooltip] = useState<{ id: string | null; message: string }>({ id: null, message: '' });
+  const [cooldowns, setCooldowns] = useState<Record<string, boolean>>({});
 
   // Derived: Current Hand Ranking
-  const selectedCards = useMemo(() => 
-    hand.filter(c => selectedIds.includes(c.id)), 
-  [hand, selectedIds]);
+  const selectedCards = useMemo(() =>
+    hand.filter(c => selectedIds.includes(c.id)),
+    [hand, selectedIds]);
 
   // Random quote picked once per game-over transition
   const gameOverQuote = useMemo(
@@ -57,9 +59,9 @@ const GameBoard: React.FC = () => {
     [gameStatus]
   );
 
-  const handRank = useMemo(() => 
-    evaluateHand(selectedCards).handName, 
-  [selectedCards]);
+  const handRank = useMemo(() =>
+    evaluateHand(selectedCards).handName,
+    [selectedCards]);
 
   useEffect(() => {
     if (gameStatus === 'idle') {
@@ -67,12 +69,28 @@ const GameBoard: React.FC = () => {
     }
   }, [gameStatus, resetGame]);
 
+  const triggerTooltip = (id: string, message: string) => {
+    if (cooldowns[id]) return;
+    setTooltip({ id, message });
+    setCooldowns(prev => ({ ...prev, [id]: true }));
+
+    // Hide after 1.5s
+    setTimeout(() => {
+      setTooltip({ id: null, message: '' });
+    }, 1500);
+
+    // Cooldown: 1.5s (visible) + 1s (hidden) = 2.5s total before re-trigger
+    setTimeout(() => {
+      setCooldowns(prev => ({ ...prev, [id]: false }));
+    }, 2500);
+  };
+
   const handleRoll = () => {
     if (rollsRemaining <= 0 || isRolling || hand.length >= gameConfig.handSize) return;
-    
+
     setIsRolling(true);
     HapticController.trigger('light');
-    
+
     setTimeout(() => {
       const newValue = Math.floor(Math.random() * 6) + 1;
       setLastDieValue(newValue);
@@ -105,20 +123,20 @@ const GameBoard: React.FC = () => {
     <div className="flex flex-col flex-1 bg-parlor-surface overflow-hidden pt-2">
       {/* Main Scrollable Content */}
       <main className="flex-1 px-4 max-w-lg mx-auto w-full space-y-3 pb-24 overflow-y-auto scrollbar-hide">
-        
+
         {/* 2. Decks Section */}
         <section className="space-y-2">
           <h2 className="text-[12px] font-sans font-black text-parlor-on-surface-variant tracking-[0.25em] px-1 uppercase opacity-50">
             Decks
           </h2>
           <div className="flex justify-between gap-1 px-1 flex-nowrap">
-             {decks.map(deck => (
-                <DeckSpot 
-                  key={deck.id} 
-                  deck={deck} 
-                  isClickable={false}
-                />
-             ))}
+            {decks.map(deck => (
+              <DeckSpot
+                key={deck.id}
+                deck={deck}
+                isClickable={false}
+              />
+            ))}
           </div>
         </section>
 
@@ -127,10 +145,10 @@ const GameBoard: React.FC = () => {
           <h2 className="text-[12px] font-sans font-black text-parlor-on-surface-variant tracking-[0.25em] px-1 uppercase opacity-50">
             Cards in Your Hand
           </h2>
-          <HandArea 
-            hand={hand} 
-            selectedIds={selectedIds} 
-            onToggleSelection={handleToggleSelection} 
+          <HandArea
+            hand={hand}
+            selectedIds={selectedIds}
+            onToggleSelection={handleToggleSelection}
           />
         </section>
 
@@ -144,14 +162,31 @@ const GameBoard: React.FC = () => {
               {selectedIds.length > 0 ? handRank : 'NONE'}
             </span>
           </div>
-          
-          <button
-            onClick={handlePlayHand}
-            disabled={selectedIds.length === 0}
-            className="w-full py-4 bg-parlor-secondary text-white rounded-2xl font-display font-extrabold text-base tracking-[0.1em] uppercase shadow-xl shadow-parlor-secondary/25 active:scale-[0.98] transition-all disabled:opacity-20 disabled:grayscale"
-          >
-            PLAY SELECTED HAND
-          </button>
+
+          <div className="relative w-full">
+            <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 flex justify-center pointer-events-none z-[70] w-max">
+              <AnimatePresence>
+                {tooltip.id === 'play' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                    className="bg-[#3e4324] text-white text-[13px] font-bold px-6 py-2.5 rounded-2xl max-w-[220px] text-center shadow-2xl relative leading-snug"
+                  >
+                    {tooltip.message}
+                    <div className="absolute -bottom-1.2 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#3e4324] rotate-45 rounded-sm" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <button
+              onClick={() => selectedIds.length > 0 ? handlePlayHand() : triggerTooltip('play', 'Select at least one card to play')}
+              className={`w-full py-4 bg-parlor-secondary text-white rounded-2xl font-display font-extrabold text-base tracking-[0.1em] uppercase shadow-xl shadow-parlor-secondary/25 active:scale-[0.98] transition-all ${selectedIds.length === 0 ? 'opacity-20 grayscale cursor-default' : ''}`}
+            >
+              PLAY SELECTED HAND
+            </button>
+          </div>
         </section>
 
         {/* 5. Roll Controls */}
@@ -169,19 +204,37 @@ const GameBoard: React.FC = () => {
               </span>
             </div>
           </div>
-          
+
           <div className="flex gap-4 items-center">
             <Die value={lastDieValue} isRolling={isRolling} />
-            <button
-              onClick={handleRoll}
-              disabled={rollsRemaining <= 0 || isRolling || hand.length >= gameConfig.handSize}
-              className="bg-parlor-secondary text-white px-7 py-3 rounded-2xl flex flex-col items-center justify-center shadow-xl shadow-parlor-secondary/30 active:scale-95 transition-all disabled:opacity-20"
-            >
-              <Dices className="w-6 h-6 mb-0.5" strokeWidth={2} />
-              <span className="text-[10px] font-black font-display tracking-[0.2em] uppercase leading-none">
-                ROLL
-              </span>
-            </button>
+
+            <div className="relative">
+              <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 flex justify-center pointer-events-none z-[70] w-max">
+                <AnimatePresence>
+                  {tooltip.id === 'roll' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                      className="bg-[#3e4324] text-white text-[13px] font-bold px-6 py-2.5 rounded-2xl max-w-[220px] text-center shadow-2xl relative leading-snug"
+                    >
+                      {tooltip.message}
+                      <div className="absolute -bottom-1.2 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#3e4324] rotate-45 rounded-sm" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <button
+                onClick={() => (rollsRemaining > 0 && !isRolling && hand.length < gameConfig.handSize) ? handleRoll() : triggerTooltip('roll', 'Play a hand first.')}
+                className={`bg-parlor-secondary text-white px-7 py-3 rounded-2xl flex flex-col items-center justify-center shadow-xl shadow-parlor-secondary/30 active:scale-95 transition-all ${(rollsRemaining <= 0 || isRolling || hand.length >= gameConfig.handSize) ? 'opacity-20 grayscale cursor-default' : ''}`}
+              >
+                <Dices className="w-6 h-6 mb-0.5" strokeWidth={2} />
+                <span className="text-[10px] font-black font-display tracking-[0.2em] uppercase leading-none">
+                  ROLL
+                </span>
+              </button>
+            </div>
           </div>
         </section>
 
@@ -194,12 +247,12 @@ const GameBoard: React.FC = () => {
       {gameStatus === 'ended' && (
         <div className="absolute inset-0 z-[60] bg-parlor-surface/98 backdrop-blur-xl flex flex-col items-center justify-center px-6 animate-in fade-in zoom-in-95 duration-700">
           <div className="w-full max-w-sm flex flex-col items-center text-center">
-            
+
             {/* Top Icon */}
             <div className="mb-8 bg-parlor-surface-highest/50 p-6 rounded-full inline-flex items-center justify-center ring-1 ring-parlor-primary/5">
               <Dice5 className="text-parlor-primary w-12 h-12" strokeWidth={1.2} />
             </div>
-            
+
             {/* Title & Subtitle */}
             <h2 className="font-display font-black text-6xl text-parlor-primary tracking-tight mb-3">
               Game Over
@@ -207,7 +260,7 @@ const GameBoard: React.FC = () => {
             <p className="font-sans text-parlor-on-surface-variant uppercase tracking-[0.3em] text-[10px] font-bold opacity-70 mb-10 max-w-[280px] leading-relaxed">
               {gameOverQuote}
             </p>
-            
+
             {/* Score Card */}
             <div className="bg-white w-full p-10 rounded-[2.5rem] shadow-parlor mb-12 relative overflow-hidden ring-1 ring-parlor-primary/[0.03]">
               <div className="flex flex-col items-center relative z-10">
@@ -226,18 +279,18 @@ const GameBoard: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Action Buttons */}
             <div className="grid grid-cols-1 gap-4 w-full">
-              <button 
-                onClick={() => resetGame()} 
+              <button
+                onClick={() => resetGame()}
                 className="bg-parlor-secondary text-white font-display font-extrabold py-5 rounded-2xl shadow-xl shadow-parlor-secondary/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 uppercase tracking-[0.15em] text-sm"
               >
                 <RotateCcw className="w-5 h-5" strokeWidth={2.5} />
                 New Game
               </button>
-              
-              <button 
+
+              <button
                 onClick={() => setScreen('highscore')}
                 className="bg-parlor-primary text-white font-display font-extrabold py-5 rounded-2xl shadow-xl shadow-parlor-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 uppercase tracking-[0.15em] text-sm"
               >
@@ -250,24 +303,31 @@ const GameBoard: React.FC = () => {
         </div>
       )}
 
-      {/* Reshuffling Overlay */}
-      <AnimatePresence>
-        {gameStatus === 'reshuffling' && (
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 1.1, y: -40 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="absolute inset-0 z-[70] flex flex-col items-center justify-center pointer-events-none"
-          >
-            <div className="bg-parlor-surface/95 px-8 py-4 rounded-xl shadow-2xl border border-parlor-primary/10 backdrop-blur-sm text-center">
-              <span className="text-2xl sm:text-3xl font-display font-black tracking-[0.2em] text-parlor-primary uppercase">
-                Reshuffling Deck {reshufflingDecks.join(' & ')}
+      {/* Reshuffling Floating Pills */}
+      <div className="absolute top-[28%] left-0 right-0 z-[70] flex flex-col items-center gap-3 pointer-events-none px-6">
+        <AnimatePresence>
+          {reshufflingDecks.map((deckIndex, i) => (
+            <motion.div
+              key={`reshuffle-${deckIndex}-${i}`}
+              initial={{ opacity: 0, y: 30, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -50, scale: 1.05 }}
+              transition={{ 
+                duration: 0.7, 
+                delay: i * 0.2,
+                ease: [0.22, 1, 0.36, 1] 
+              }}
+              className="bg-white/95 backdrop-blur-md px-10 py-5 rounded-full shadow-2xl shadow-parlor-primary/10 flex items-center gap-5 border border-parlor-primary/5"
+            >
+              <RotateCcw className="w-6 h-6 text-parlor-secondary" strokeWidth={2.5} />
+              <span className="text-[21px] font-bold font-sans text-parlor-primary tracking-tight">
+                Reshuffling Deck {deckIndex + 1}
               </span>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <div className="w-2.5 h-2.5 rounded-full bg-parlor-secondary" />
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };

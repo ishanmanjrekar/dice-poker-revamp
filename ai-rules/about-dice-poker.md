@@ -8,14 +8,13 @@ Dice Poker is a solo roguelike-inspired card game that combines poker hand scori
 ## Core Mechanics
 
 ### Setup
-- **Decks**: 6 decks arranged in a row.
-- **Card Distribution**: Each deck contains 7 face-down cards and 1 face-up card on top (total 8 cards per deck, 48 cards total).
-- **Starting Hand**: 4 cards dealt from the remaining 4 cards in the standard 52-card deck.
+- **Decks**: 6 piles: 7 down + 1 up each (8 cards per pile, 48 cards total).
+- **Starting Hand**: Start with **4 cards** in hand.
 - **Die**: A standard 6-sided die.
 
 ### Gameplay Loop
 1. **Roll Phase**:
-    - Roll the die (up to 5 times per round).
+    - Roll the die (Max **3 rolls** per round).
     - Draw the top card from the deck corresponding to the die roll (1-6).
     - Reveal the next card in that deck if available.
     - Hand limit: **7 cards**. Cannot roll if hand is full.
