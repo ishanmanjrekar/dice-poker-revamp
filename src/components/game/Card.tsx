@@ -46,7 +46,7 @@ const Card: React.FC<CardProps> = ({ card, isSelected, onClick, className }) => 
           )}>
             <span className="text-lg font-bold font-display">{card.rank}</span>
             <img 
-              src={`/src/assets/suits/suits-${card.suit.toLowerCase()}.png`} 
+              src={`./assets/suits/suits-${card.suit.toLowerCase()}.png`} 
               alt={card.suit} 
               className="w-3 h-3 object-contain mt-0.5"
             />
@@ -55,7 +55,7 @@ const Card: React.FC<CardProps> = ({ card, isSelected, onClick, className }) => 
           {/* Center Suit */}
           <div className="flex-1 flex items-center justify-center">
              <img 
-              src={`/src/assets/suits/suits-${card.suit.toLowerCase()}.png`} 
+              src={`./assets/suits/suits-${card.suit.toLowerCase()}.png`} 
               alt={card.suit} 
               className="w-8 h-8 object-contain opacity-90"
             />
@@ -68,7 +68,7 @@ const Card: React.FC<CardProps> = ({ card, isSelected, onClick, className }) => 
           )}>
             <span className="text-lg font-bold font-display">{card.rank}</span>
             <img 
-              src={`/src/assets/suits/suits-${card.suit.toLowerCase()}.png`} 
+              src={`./assets/suits/suits-${card.suit.toLowerCase()}.png`} 
               alt={card.suit} 
               className="w-3 h-3 object-contain mt-0.5"
             />
