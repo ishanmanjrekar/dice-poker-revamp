@@ -1,4 +1,3 @@
-import React from 'react';
 import { useGameStore } from '../../core/state';
 
 const HighScoreScreen: React.FC = () => {
@@ -20,11 +19,10 @@ const HighScoreScreen: React.FC = () => {
 
   return (
     <div className="flex-1 px-6 max-w-md mx-auto w-full pb-32 overflow-y-auto scrollbar-hide pt-8">
-      <section className="mb-8 text-center">
-        <h1 className="font-display text-4xl font-extrabold tracking-tight text-parlor-primary mb-2 uppercase">
+      <section className="mb-8 text-center mt-2">
+        <h1 className="font-display text-4xl font-extrabold tracking-tight text-parlor-primary uppercase">
           High Scores
         </h1>
-        {/* Subheader "The Modern Parlor Elite" removed by request */}
       </section>
 
       <div className="space-y-2">

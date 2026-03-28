@@ -155,7 +155,7 @@ const SettingsScreen: React.FC = () => {
     <div className="flex-1 px-4 max-w-lg mx-auto w-full space-y-8 pb-32 overflow-y-auto scrollbar-hide pt-safe mt-6">
       
       {/* Page Title */}
-      <div className="px-2">
+      <div className="px-2 pt-2">
         <h2 className="text-3xl font-display font-bold text-parlor-primary tracking-tight">Settings</h2>
       </div>
 
