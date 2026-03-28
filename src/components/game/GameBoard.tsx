@@ -36,7 +36,8 @@ const GameBoard: React.FC = () => {
     reshufflingDecks,
     rollDice,
     playHand,
-    resetGame
+    resetGame,
+    setScreen
   } = useGameStore();
 
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -229,6 +230,7 @@ const GameBoard: React.FC = () => {
               </button>
               
               <button 
+                onClick={() => setScreen('highscore')}
                 className="bg-parlor-surface-highest text-parlor-primary font-display font-semibold py-4 rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-sm"
               >
                 High Scores

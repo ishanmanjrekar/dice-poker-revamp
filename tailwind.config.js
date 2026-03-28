@@ -9,11 +9,13 @@ export default {
       colors: {
         parlor: {
           primary: '#3e4324', // Deep Olive
+          'primary-container': '#555a39',
           secondary: '#ad3130', // Terracotta
           surface: '#f9fbee', // Cream
           'surface-low': '#f3f5e8',
           'surface-container': '#edefe2',
           'surface-highest': '#e1e4d7',
+          'surface-lowest': '#ffffff',
           'on-surface-variant': '#47473e',
         }
       },

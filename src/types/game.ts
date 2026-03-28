@@ -13,6 +13,11 @@ export interface Deck {
 
 export type ScreenType = 'game' | 'settings' | 'highscore';
 
+export interface HighScore {
+  score: number;
+  timestamp: number;
+}
+
 export interface GameState {
   currentScreen: ScreenType;
   decks: Deck[];
@@ -22,6 +27,7 @@ export interface GameState {
   handsPlayed: number;
   totalScore: number;
   history: any[];
+  highScores: HighScore[];
   currentSkin: string;
   gameStatus: 'idle' | 'playing' | 'reshuffling' | 'ended';
   reshufflingDecks: number[];
