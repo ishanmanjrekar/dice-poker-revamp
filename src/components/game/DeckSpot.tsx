@@ -6,9 +6,10 @@ interface DeckSpotProps {
   deck: Deck;
   onDraw?: () => void;
   isClickable?: boolean;
+  isHighlighted?: boolean;
 }
 
-const DeckSpot: React.FC<DeckSpotProps> = ({ deck, onDraw, isClickable }) => {
+const DeckSpot: React.FC<DeckSpotProps> = ({ deck, onDraw, isClickable, isHighlighted }) => {
   const topCard = deck.cards.length > 0 ? deck.cards[deck.cards.length - 1] : null;
   const [isBlinking, setIsBlinking] = useState(false);
 
@@ -22,7 +23,7 @@ const DeckSpot: React.FC<DeckSpotProps> = ({ deck, onDraw, isClickable }) => {
 
   return (
     <div className="flex flex-col items-center gap-2 flex-shrink-0" style={{ zIndex: 20 - Number(deck.id), position: 'relative' }}>
-      <div className="relative group">
+      <div id={`deck-${deck.id}`} className="relative group">
          {/* Deck Stack Visualization */}
          {deck.cards.length > 1 && (
            <div className="absolute top-1 left-1 w-[58px] h-[84px] bg-parlor-primary/10 rounded-lg -z-10 translate-y-1 translate-x-1"></div>
@@ -33,7 +34,7 @@ const DeckSpot: React.FC<DeckSpotProps> = ({ deck, onDraw, isClickable }) => {
 
          {topCard ? (
            <div 
-             className={`w-[58px] h-[84px] bg-white rounded-lg flex flex-col items-center justify-center border border-parlor-on-surface-variant/20 relative shadow-sm transition-transform ${isClickable ? "hover:ring-4 ring-parlor-primary/20 cursor-pointer active:scale-95" : ""}`}
+             className={`w-[58px] h-[84px] bg-white rounded-lg flex flex-col items-center justify-center border relative shadow-sm transition-all duration-300 ${isHighlighted ? "scale-110 ring-4 ring-parlor-secondary/40 border-parlor-secondary z-50 shadow-xl" : (isClickable ? "hover:ring-4 ring-parlor-primary/20 cursor-pointer active:scale-95 border-parlor-on-surface-variant/20" : "border-parlor-on-surface-variant/20")}`}
              onClick={isClickable ? onDraw : undefined}
            >
              {/* Red Dot Badge */}

@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '../../core/state';
 // Removed ScoreBoard import
 import DeckSpot from './DeckSpot';
 import HandArea from './HandArea';
+import Card from './Card';
 import Die from './Die';
 import MatchLog from './MatchLog';
 import { HapticController } from '../../core/sensory-feedback';
@@ -46,6 +48,12 @@ const GameBoard: React.FC = () => {
   const [lastDieValue, setLastDieValue] = useState(1);
   const [tooltip, setTooltip] = useState<{ id: string | null; message: string }>({ id: null, message: '' });
   const [cooldowns, setCooldowns] = useState<Record<string, boolean>>({});
+  const [highlightedDeckId, setHighlightedDeckId] = useState<number | null>(null);
+  const [animatingCard, setAnimatingCard] = useState<{
+    card: any;
+    start: { x: number; y: number };
+    end: { x: number; y: number };
+  } | null>(null);
 
   // Derived: Current Hand Ranking
   const selectedCards = useMemo(() =>
@@ -94,10 +102,44 @@ const GameBoard: React.FC = () => {
     setTimeout(() => {
       const newValue = Math.floor(Math.random() * 6) + 1;
       setLastDieValue(newValue);
-      rollDice(newValue);
-      setIsRolling(false);
+      
+      // 1. Highlight the deck
+      setHighlightedDeckId(newValue);
       HapticController.trigger('medium');
-    }, 600);
+
+      // 2. Prepare the fly animation
+      const deckEl = document.getElementById(`deck-${newValue}`);
+      const handSlotEl = document.getElementById(`hand-slot-${hand.length}`);
+      
+      const targetDeck = decks[newValue - 1];
+      if (deckEl && handSlotEl && targetDeck && targetDeck.cards.length > 0) {
+        const deckRect = deckEl.getBoundingClientRect();
+        const slotRect = handSlotEl.getBoundingClientRect();
+        const topCard = targetDeck.cards[targetDeck.cards.length - 1];
+
+        setAnimatingCard({
+          card: topCard,
+          start: { x: deckRect.left, y: deckRect.top },
+          end: { x: slotRect.left, y: slotRect.top }
+        });
+
+        // 3. Finalize after fly duration
+        setTimeout(() => {
+          rollDice(newValue);
+          // Small delay before clearing to ensure store update doesn't cause a flicker
+          setTimeout(() => {
+            setAnimatingCard(null);
+            setHighlightedDeckId(null);
+            setIsRolling(false);
+          }, 30);
+        }, 600); // Wait for the full 600ms fly animation
+      } else {
+        // Fallback if no card or no elements
+        rollDice(newValue);
+        setHighlightedDeckId(null);
+        setIsRolling(false);
+      }
+    }, 600); // Die roll duration
   };
 
   const handleToggleSelection = (id: string) => {
@@ -135,6 +177,7 @@ const GameBoard: React.FC = () => {
                 key={deck.id}
                 deck={deck}
                 isClickable={false}
+                isHighlighted={highlightedDeckId === Number(deck.id)}
               />
             ))}
           </div>
@@ -301,6 +344,45 @@ const GameBoard: React.FC = () => {
 
           </div>
         </div>
+      )}
+
+      {/* Flying Card Animation Overlay (using Portal for viewport-absolute positioning) */}
+      {animatingCard && createPortal(
+        <AnimatePresence>
+          <motion.div
+            initial={{ 
+              position: 'fixed',
+              top: animatingCard.start.y,
+              left: animatingCard.start.x,
+              width: 70, 
+              height: 100,
+              scale: 58 / 70,
+              transformOrigin: 'top left',
+              opacity: 1,
+              zIndex: 1000,
+              pointerEvents: 'none'
+            }}
+            animate={{ 
+              top: animatingCard.end.y,
+              left: animatingCard.end.x,
+              scale: 1,
+              opacity: 1,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{ 
+              type: 'spring', 
+              stiffness: 160, 
+              damping: 22,
+              mass: 1
+            }}
+          >
+             <Card 
+               card={{ ...animatingCard.card, isFaceUp: true }} 
+               className="shadow-2xl"
+             />
+          </motion.div>
+        </AnimatePresence>,
+        document.body
       )}
 
       {/* Reshuffling Floating Pills */}
