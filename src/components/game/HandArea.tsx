@@ -32,7 +32,7 @@ const HandArea: React.FC<HandAreaProps> = ({ hand, selectedIds, onToggleSelectio
              ))}
              {/* Empty Placeholder slots to maintain layout */}
              {hand.length < 4 && Array.from({ length: 4 - hand.length }).map((_, i) => (
-                <div key={`p1-${i}`} className="w-[70px] h-[100px] border border-dashed border-parlor-primary/10 rounded-lg" />
+                <div key={`p1-${i}`} className="w-[70px] h-[100px] border-2 border-dashed border-parlor-primary/50 rounded-xl" />
              ))}
           </div>
 
@@ -47,7 +47,7 @@ const HandArea: React.FC<HandAreaProps> = ({ hand, selectedIds, onToggleSelectio
                />
              ))}
              {Array.from({ length: Math.max(0, 3 - Math.max(0, hand.length - 4)) }).map((_, i) => (
-                <div key={`p2-${i}`} className="w-[70px] h-[100px] border border-dashed border-parlor-primary/10 rounded-lg" />
+                <div key={`p2-${i}`} className="w-[70px] h-[100px] border-2 border-dashed border-parlor-primary/50 rounded-xl" />
              ))}
           </div>
        </div>

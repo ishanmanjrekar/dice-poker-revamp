@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useGameStore } from '../../core/state';
 import { 
-  BookOpen, Layers, Hand, Dices, RefreshCw, 
-  Hand as HandIcon, Pointer, Medal, Star, 
-  TrendingUp, Minus, Plus, Sparkles, RotateCcw
+  BookOpen, Layers, Hand, Dice5, RotateCcw, 
+  Hand as HandIcon, MousePointer2, Medal, Star, 
+  TrendingUp, Minus, Plus, Sparkles, RotateCcw as ResetIcon
 } from 'lucide-react';
 import gameConfig from '../../../game-config.json';
 
@@ -157,25 +157,24 @@ const SettingsScreen: React.FC = () => {
       {/* Page Title */}
       <div className="px-2">
         <h2 className="text-3xl font-display font-bold text-parlor-primary tracking-tight">Settings</h2>
-        <p className="text-parlor-on-surface-variant font-sans mt-1 text-sm">Customize multipliers and review the parlor rules.</p>
       </div>
 
       {/* Section: RULES */}
       <section className="space-y-4">
         <div className="flex items-center gap-3 px-2">
-          <BookOpen className="text-parlor-secondary w-5 h-5" />
-          <h3 className="text-[10px] font-display font-bold text-parlor-primary uppercase tracking-[0.2em]">The Rules</h3>
+          <BookOpen className="text-parlor-secondary w-5 h-5 opacity-80" strokeWidth={2.5} />
+          <h3 className="text-[11px] font-sans font-black text-parlor-on-surface-variant uppercase tracking-[0.25em]">The Rules</h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="flex flex-col gap-2">
           <RuleItem icon={<Layers />} text="6 piles: 7 down + 1 up each." />
-          <RuleItem icon={<HandIcon />} text={`Start with ${gameConfig.handSize} cards in hand.`} />
-          <RuleItem icon={<Dices />} text="Roll dice to take matching pile card." />
-          <RuleItem icon={<RefreshCw />} text={`Max ${gameConfig.maxRolls} rolls per round.`} />
-          <RuleItem icon={<span className="font-bold text-lg">H</span>} text={`Hand limit: ${gameConfig.handLimit} cards.`} />
-          <RuleItem icon={<Pointer />} text="Select up to 5 cards & play." />
+          <RuleItem icon={<Hand />} text="Start with 4 cards in hand." />
+          <RuleItem icon={<Dice5 />} text="Roll dice to take matching pile card." />
+          <RuleItem icon={<RotateCcw />} text="Max 3 rolls per round." />
+          <RuleItem icon={<HandIcon />} text="Hand limit: 7 cards." />
+          <RuleItem icon={<MousePointer2 />} text="Select up to 5 cards & play." />
           <RuleItem icon={<Medal />} text="Score using Poker ranks." />
-          <RuleItem icon={<Star />} text={`Play ${gameConfig.handLimit} hands total.`} />
+          <RuleItem icon={<Star />} text="Play 15 hands total." />
         </div>
       </section>
 
@@ -197,7 +196,7 @@ const SettingsScreen: React.FC = () => {
                   : 'text-parlor-primary/10 cursor-not-allowed'
               }`}
             >
-              <RotateCcw className="w-5 h-5" />
+              <ResetIcon className="w-5 h-5" />
             </button>
             <button 
               onClick={handleSave}
@@ -221,13 +220,13 @@ const SettingsScreen: React.FC = () => {
                   <HandExample hand={hand} />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-display font-bold text-parlor-primary text-[10px] uppercase tracking-wider">
+                  <span className="font-display font-bold text-parlor-primary text-xs uppercase tracking-wider">
                     {hand === 'Royal Flush' ? 'Royal Flush Jackpot' : hand}
                   </span>
                   {hand === 'Royal Flush' && (
                     <div className="flex items-center gap-1 mt-0.5">
                       <Sparkles className="w-3 h-3 text-parlor-secondary" fill="currentColor" />
-                      <span className="text-[8px] font-bold text-parlor-secondary uppercase tracking-tighter">Jackpot Hand</span>
+                      <span className="text-[10px] font-bold text-parlor-secondary uppercase tracking-tighter">Jackpot Hand</span>
                     </div>
                   )}
                 </div>
@@ -240,7 +239,7 @@ const SettingsScreen: React.FC = () => {
                 >
                   <Minus className="w-4 h-4" />
                 </button>
-                <div className="w-10 text-center font-display font-bold text-parlor-primary text-base">
+                <div className="w-10 text-center font-display font-bold text-parlor-primary text-lg">
                   {pendingMultipliers[hand] || multipliers[hand] || 1}
                 </div>
                 <button 
@@ -260,11 +259,11 @@ const SettingsScreen: React.FC = () => {
 };
 
 const RuleItem: React.FC<{ icon: React.ReactNode, text: string }> = ({ icon, text }) => (
-  <div className="flex items-center gap-4 p-4 bg-parlor-surface-low rounded-xl ring-1 ring-parlor-primary/5 shadow-sm">
-    <div className="w-10 h-10 flex items-center justify-center bg-parlor-surface-lowest rounded-full text-parlor-primary shrink-0">
-      {React.isValidElement(icon) ? React.cloneElement(icon as React.ReactElement, { size: 20, strokeWidth: 1.5 }) : icon}
+  <div className="flex items-center gap-4 py-3 px-3.5 bg-parlor-surface-low rounded-2xl ring-1 ring-parlor-primary/5 shadow-sm">
+    <div className="w-10 h-10 flex items-center justify-center bg-white rounded-full text-parlor-primary shrink-0 shadow-sm">
+      {React.isValidElement(icon) ? React.cloneElement(icon as React.ReactElement, { size: 18, strokeWidth: 2.5 }) : icon}
     </div>
-    <p className="text-parlor-on-surface text-sm font-medium">{text}</p>
+    <p className="text-parlor-on-surface-variant text-[15px] font-bold font-sans tracking-tight leading-snug">{text}</p>
   </div>
 );
 

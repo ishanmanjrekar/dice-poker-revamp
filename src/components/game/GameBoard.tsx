@@ -9,7 +9,7 @@ import MatchLog from './MatchLog';
 import { HapticController } from '../../core/sensory-feedback';
 import { evaluateHand } from '../../core/poker-engine';
 import gameConfig from '../../../game-config.json';
-import { Dices } from 'lucide-react';
+import { Dice5, RotateCcw, BarChart2, Dices } from 'lucide-react';
 
 const GAME_OVER_QUOTES = [
   "The house always wins, but you did well.",
@@ -37,7 +37,8 @@ const GameBoard: React.FC = () => {
     rollDice,
     playHand,
     resetGame,
-    setScreen
+    setScreen,
+    highScores
   } = useGameStore();
 
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -107,8 +108,8 @@ const GameBoard: React.FC = () => {
         
         {/* 2. Decks Section */}
         <section className="space-y-2">
-          <h2 className="text-[10px] font-bold font-sans text-parlor-on-surface-variant tracking-[0.2em] px-1 uppercase opacity-60">
-            DECKS
+          <h2 className="text-[12px] font-sans font-black text-parlor-on-surface-variant tracking-[0.25em] px-1 uppercase opacity-50">
+            Decks
           </h2>
           <div className="flex justify-between gap-1 px-1 flex-nowrap">
              {decks.map(deck => (
@@ -122,9 +123,9 @@ const GameBoard: React.FC = () => {
         </section>
 
         {/* 3. Hand Section */}
-        <section className="space-y-2 pt-0">
-          <h2 className="text-[10px] font-bold font-sans text-parlor-on-surface-variant tracking-[0.2em] px-1 uppercase opacity-60">
-            CARDS IN YOUR HAND
+        <section className="space-y-2 pt-6">
+          <h2 className="text-[12px] font-sans font-black text-parlor-on-surface-variant tracking-[0.25em] px-1 uppercase opacity-50">
+            Cards in Your Hand
           </h2>
           <HandArea 
             hand={hand} 
@@ -191,48 +192,56 @@ const GameBoard: React.FC = () => {
 
       {/* End Game Overlay */}
       {gameStatus === 'ended' && (
-        <div className="absolute inset-0 z-[60] bg-parlor-surface/95 backdrop-blur-md flex flex-col items-center justify-center px-6 animate-in fade-in duration-700">
+        <div className="absolute inset-0 z-[60] bg-parlor-surface/98 backdrop-blur-xl flex flex-col items-center justify-center px-6 animate-in fade-in zoom-in-95 duration-700">
           <div className="w-full max-w-sm flex flex-col items-center text-center">
             
-            <div className="mb-6 bg-parlor-surface-highest p-6 rounded-full inline-flex items-center justify-center">
-              <Dices className="text-parlor-primary w-12 h-12" strokeWidth={1.5} />
+            {/* Top Icon */}
+            <div className="mb-8 bg-parlor-surface-highest/50 p-6 rounded-full inline-flex items-center justify-center ring-1 ring-parlor-primary/5">
+              <Dice5 className="text-parlor-primary w-12 h-12" strokeWidth={1.2} />
             </div>
             
-            <h2 className="font-display font-extrabold text-5xl text-parlor-primary tracking-tighter mb-2">
+            {/* Title & Subtitle */}
+            <h2 className="font-display font-black text-6xl text-parlor-primary tracking-tight mb-3">
               Game Over
             </h2>
-            <p className="font-mono text-parlor-on-surface-variant uppercase tracking-[0.2em] text-xs mb-8">
+            <p className="font-sans text-parlor-on-surface-variant uppercase tracking-[0.3em] text-[10px] font-bold opacity-70 mb-10 max-w-[280px] leading-relaxed">
               {gameOverQuote}
             </p>
             
-            <div className="bg-white w-full p-8 rounded-xl shadow-parlor mb-10 relative overflow-hidden">
+            {/* Score Card */}
+            <div className="bg-white w-full p-10 rounded-[2.5rem] shadow-parlor mb-12 relative overflow-hidden ring-1 ring-parlor-primary/[0.03]">
               <div className="flex flex-col items-center relative z-10">
-                <div className="flex items-center gap-3 mb-1">
-                  <span className="font-mono text-parlor-on-surface-variant text-[11px] font-medium uppercase tracking-widest">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="font-sans text-parlor-on-surface-variant text-[10px] font-black uppercase tracking-[0.2em] opacity-50">
                     Total Score
                   </span>
+                  {highScores.length > 0 && totalScore >= Math.max(...highScores.map(h => h.score)) && (
+                    <span className="bg-parlor-secondary text-white text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-lg shadow-parlor-secondary/20">
+                      New Highscore
+                    </span>
+                  )}
                 </div>
-                <div className="font-display font-extrabold text-7xl text-parlor-primary tracking-tighter">
+                <div className="font-display font-black text-8xl text-parlor-primary tracking-tighter">
                   {totalScore.toLocaleString()}
                 </div>
               </div>
-              <div className="absolute -bottom-8 -right-8 opacity-5 rotate-12 z-0">
-                <Dices className="w-48 h-48" />
-              </div>
             </div>
             
+            {/* Action Buttons */}
             <div className="grid grid-cols-1 gap-4 w-full">
               <button 
                 onClick={() => resetGame()} 
-                className="bg-parlor-secondary text-white font-display font-semibold py-4 rounded-xl shadow-[inset_0_2px_0_rgba(255,255,255,0.2)] hover:opacity-90 transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-sm"
+                className="bg-parlor-secondary text-white font-display font-extrabold py-5 rounded-2xl shadow-xl shadow-parlor-secondary/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 uppercase tracking-[0.15em] text-sm"
               >
+                <RotateCcw className="w-5 h-5" strokeWidth={2.5} />
                 New Game
               </button>
               
               <button 
                 onClick={() => setScreen('highscore')}
-                className="bg-parlor-surface-highest text-parlor-primary font-display font-semibold py-4 rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-sm"
+                className="bg-parlor-primary text-white font-display font-extrabold py-5 rounded-2xl shadow-xl shadow-parlor-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 uppercase tracking-[0.15em] text-sm"
               >
+                <BarChart2 className="w-5 h-5" strokeWidth={2.5} />
                 High Scores
               </button>
             </div>
