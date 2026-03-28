@@ -36,12 +36,12 @@ const ModernParlorLayout: React.FC<LayoutProps> = ({ children }) => {
       
       {/* Bounding Box Wrapper */}
       <div 
-        className="flex items-center justify-center overflow-hidden" 
+        className="relative overflow-hidden shrink-0" 
         style={{ width: 540 * scale, height: 960 * scale }}
       >
         {/* Scaled Game Container */}
         <div 
-          className="relative bg-parlor-surface shadow-2xl rounded-[40px] border-8 border-parlor-primary/5 flex flex-col overflow-hidden transition-transform duration-100 ease-linear shrink-0"
+          className="absolute top-0 left-0 bg-parlor-surface shadow-2xl rounded-[40px] border-8 border-parlor-primary/5 flex flex-col overflow-hidden transition-transform duration-100 ease-linear"
           style={{ 
             width: '540px',
             height: '960px',
