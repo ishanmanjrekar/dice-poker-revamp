@@ -11,6 +11,7 @@ interface GameActions {
   resetGame: () => void;
   toggleCardSelection: (cardId: string) => void;
   setScreen: (screen: ScreenType) => void;
+  updateMultipliers: (multipliers: Record<string, number>) => void;
 }
 
 const initialState: GameState = {
@@ -26,6 +27,7 @@ const initialState: GameState = {
   currentSkin: 'standard',
   gameStatus: 'idle',
   reshufflingDecks: [],
+  multipliers: gameConfig.multipliers,
 };
 
 export const useGameStore = create<GameState & GameActions>()(
@@ -41,6 +43,7 @@ export const useGameStore = create<GameState & GameActions>()(
           hand: startingHand,
           gameStatus: 'playing',
           highScores: get().highScores, // Preserve high scores across resets
+          multipliers: get().multipliers, // Preserve custom multipliers across resets
         });
       },
 
@@ -83,10 +86,10 @@ export const useGameStore = create<GameState & GameActions>()(
       },
 
       playHand: (selectedCards: Card[]) => {
-        const { hand, discardPile, totalScore, handsPlayed, history, highScores } = get();
+        const { hand, discardPile, totalScore, handsPlayed, history, highScores, multipliers } = get();
         if (selectedCards.length === 0) return;
-
-        const result = evaluateHand(selectedCards);
+ 
+        const result = evaluateHand(selectedCards, multipliers);
         const newTotalScore = totalScore + result.finalScore;
         const newHandsPlayed = handsPlayed + 1;
 
@@ -149,12 +152,19 @@ export const useGameStore = create<GameState & GameActions>()(
 
       setScreen: (screen: ScreenType) => {
         set({ currentScreen: screen });
+      },
+ 
+      updateMultipliers: (multipliers: Record<string, number>) => {
+        set({ multipliers });
       }
     }),
     {
       name: 'dice-poker-storage',
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ highScores: state.highScores }), // ONLY persist high scores
+      partialize: (state) => ({ 
+        highScores: state.highScores,
+        multipliers: state.multipliers 
+      }), // Persist high scores and custom multipliers
     }
   )
 );

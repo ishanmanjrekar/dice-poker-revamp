@@ -13,7 +13,7 @@ export interface ScoreResult {
   finalScore: number;
 }
 
-export function evaluateHand(cards: Card[]): ScoreResult {
+export function evaluateHand(cards: Card[], multipliers?: Record<string, number>): ScoreResult {
   if (cards.length === 0) return { handName: 'High Card', baseScore: 0, multiplier: 1, finalScore: 0 };
 
   const sortedCards = [...cards].sort((a, b) => {
@@ -45,7 +45,8 @@ export function evaluateHand(cards: Card[]): ScoreResult {
   else if (counts[0] === 2 && counts[1] === 2) handName = 'Two Pair';
   else if (counts[0] === 2) handName = 'One Pair';
 
-  const multiplier = gameConfig.multipliers[handName as keyof typeof gameConfig.multipliers] || 1;
+  const multiplierMap = multipliers || gameConfig.multipliers;
+  const multiplier = multiplierMap[handName as keyof typeof multiplierMap] || 1;
   const baseScore = cards.reduce((sum, c) => sum + RANK_VALUES[c.rank], 0);
 
   return {

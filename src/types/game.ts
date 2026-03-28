@@ -31,6 +31,7 @@ export interface GameState {
   currentSkin: string;
   gameStatus: 'idle' | 'playing' | 'reshuffling' | 'ended';
   reshufflingDecks: number[];
+  multipliers: Record<string, number>;
 }
 
 export interface GameConfig {
