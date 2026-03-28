@@ -34,18 +34,21 @@ const ModernParlorLayout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="relative min-h-[100dvh] w-full bg-parlor-surface/90 text-parlor-primary selection:bg-parlor-secondary/20 flex flex-col items-center justify-center overflow-hidden font-sans">
       
-      {/* Scaled Game Container */}
+      {/* Bounding Box Wrapper */}
       <div 
-        className="absolute bg-parlor-surface shadow-2xl rounded-[40px] border-8 border-parlor-primary/5 flex flex-col overflow-hidden transition-transform duration-100 ease-linear"
-        style={{ 
-          width: '540px',
-          height: '960px',
-          left: '50%',
-          top: '50%',
-          transform: `translate(-50%, -50%) scale(${scale})`,
-          transformOrigin: 'center center'
-        }}
+        className="flex items-center justify-center overflow-hidden" 
+        style={{ width: 540 * scale, height: 960 * scale }}
       >
+        {/* Scaled Game Container */}
+        <div 
+          className="relative bg-parlor-surface shadow-2xl rounded-[40px] border-8 border-parlor-primary/5 flex flex-col overflow-hidden transition-transform duration-100 ease-linear shrink-0"
+          style={{ 
+            width: '540px',
+            height: '960px',
+            transform: `scale(${scale})`,
+            transformOrigin: 'top left'
+          }}
+        >
         {/* Internal Texture Overlay (Stays proportional to game size) */}
         <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.03] mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]"></div>
 
@@ -53,6 +56,7 @@ const ModernParlorLayout: React.FC<LayoutProps> = ({ children }) => {
         <div className="relative z-10 w-full h-full flex flex-col overflow-hidden">
           {children}
         </div>
+      </div>
       </div>
       
     </div>
