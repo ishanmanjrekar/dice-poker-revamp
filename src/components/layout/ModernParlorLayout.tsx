@@ -36,11 +36,13 @@ const ModernParlorLayout: React.FC<LayoutProps> = ({ children }) => {
       
       {/* Scaled Game Container */}
       <div 
-        className="relative bg-parlor-surface shadow-2xl rounded-[40px] border-8 border-parlor-primary/5 flex flex-col overflow-hidden transition-transform duration-100 ease-linear"
+        className="absolute bg-parlor-surface shadow-2xl rounded-[40px] border-8 border-parlor-primary/5 flex flex-col overflow-hidden transition-transform duration-100 ease-linear"
         style={{ 
           width: '540px',
           height: '960px',
-          transform: `scale(${scale})`,
+          left: '50%',
+          top: '50%',
+          transform: `translate(-50%, -50%) scale(${scale})`,
           transformOrigin: 'center center'
         }}
       >
