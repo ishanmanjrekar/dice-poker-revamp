@@ -1,4 +1,5 @@
 import { useGameStore } from '../../core/state';
+import { Trophy, History } from 'lucide-react';
 
 const HighScoreScreen: React.FC = () => {
   const { highScores } = useGameStore();
@@ -6,16 +7,34 @@ const HighScoreScreen: React.FC = () => {
   // Sort highScores by score, descending (already sorted in state but ensuring here)
   const sortedScores = [...highScores].sort((a, b) => b.score - a.score).slice(0, 10);
 
-  // Mock data ONLY if no highScores exist
-  const displayScores = sortedScores.length > 0 ? sortedScores : [
-    { score: 14850, timestamp: Date.now() - 86400000 * 2 },
-    { score: 12400, timestamp: Date.now() - 86400000 * 4 },
-    { score: 11920, timestamp: Date.now() - 86400000 * 5 },
-  ];
-
   const formatDate = (ts: number) => {
     return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
+
+  if (sortedScores.length === 0) {
+    return (
+      <div className="flex-1 px-6 max-w-md mx-auto w-full flex flex-col items-center justify-center pb-32">
+        <div className="mb-10 bg-parlor-surface-highest/30 p-8 rounded-full inline-flex items-center justify-center ring-1 ring-parlor-primary/5 opacity-40">
+          <History className="text-parlor-primary w-14 h-14" strokeWidth={1} />
+        </div>
+        
+        <h1 className="font-display text-3xl font-black tracking-tight text-parlor-primary uppercase mb-3 text-center">
+          The Hall is Silent
+        </h1>
+        
+        <p className="font-sans text-parlor-on-surface-variant uppercase tracking-[0.3em] text-[10px] font-bold opacity-70 mb-12 max-w-[260px] leading-relaxed text-center">
+          No legends have been written in the stars yet. Record your first destiny to grace these standings.
+        </p>
+
+        <button 
+          onClick={() => useGameStore.getState().setScreen('game')}
+          className="bg-parlor-secondary text-white font-display font-black px-10 py-5 rounded-2xl shadow-xl shadow-parlor-secondary/20 uppercase tracking-[0.2em] text-xs active:scale-95 transition-all"
+        >
+          Begin Your Tale
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 px-6 max-w-md mx-auto w-full pb-32 overflow-y-auto scrollbar-hide pt-8">
@@ -26,7 +45,7 @@ const HighScoreScreen: React.FC = () => {
       </section>
 
       <div className="space-y-2">
-        {displayScores.map((score, index) => {
+        {sortedScores.map((score, index) => {
           if (index === 0) {
             // Rank 1
             return (
