@@ -1,4 +1,4 @@
-# Dice Poker: Modern Parlor
+# Dice Poker
 
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
@@ -6,7 +6,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
 
-**Dice Poker: Modern Parlor** is a high-stakes, solo roguelike-inspired card game that blends the tactical drafting of a dice game with the classic scoring of Poker. Built with a premium "Modern Parlor" aesthetic, it offers a fast-paced, addictive solitaire experience optimized for both web and mobile.
+**Dice Poker** is a high-stakes, solo roguelike-inspired card game that blends the tactical drafting of a dice game with the classic scoring of Poker. Built with a premium aesthetic, it offers a fast-paced, addictive solitaire experience optimized for both web and mobile.
 
 ## 🃏 The Concept
 
@@ -16,7 +16,7 @@ In Dice Poker, you don't just get dealt a hand—you *craft* it. Roll the dice t
 
 - **Dice-Based Drafting**: Use a standard d6 to draw cards from one of six corresponding decks.
 - **Strategic Hand Building**: Manage a hand of up to 7 cards, selecting the best combinations to score big.
-- **Modern Parlor Aesthetic**: A curated design system featuring glassmorphism, smooth animations, and a sophisticated color palette.
+- **Premium Aesthetic**: A curated design system featuring glassmorphism, smooth animations, and a sophisticated color palette.
 - **High Score System**: Compete against your own best runs with a local Hall of Fame.
 - **Fully Configurable**: All game mechanics, including multipliers and card values, are easily adjustable via `game-config.json`.
 - **Responsive Design**: Tailored for mobile-first play with a strict 9:16 aspect ratio (optimized for iPhone 15 portrait).
@@ -79,4 +79,4 @@ npx bestzip dice-poker-itch.zip dist/*
 
 ---
 
-*Crafted with 🎲 and 💻 by Ishan Manjrekar.*
+*Crafted with Google Stitch, Google Antigravity, and ♥️ by Ishan Manjrekar.*
