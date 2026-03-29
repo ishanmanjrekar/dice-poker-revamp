@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useGameStore } from '../../core/state';
-import { 
-  BookOpen, Layers, Hand, Dice5, RotateCcw, 
-  Hand as HandIcon, MousePointer2, Medal, Star, 
+import {
+  BookOpen, Layers, Hand, Dice5, RotateCcw,
+  Hand as HandIcon, MousePointer2, Medal, Star,
   TrendingUp, Minus, Plus, Sparkles, RotateCcw as ResetIcon
 } from 'lucide-react';
 import gameConfig from '../../../game-config.json';
@@ -153,7 +153,7 @@ const SettingsScreen: React.FC = () => {
 
   return (
     <div className="flex-1 px-4 max-w-lg mx-auto w-full space-y-8 pb-32 overflow-y-auto scrollbar-hide pt-safe mt-6">
-      
+
       {/* Page Title */}
       <div className="px-2 pt-2">
         <h2 className="text-3xl font-display font-bold text-parlor-primary tracking-tight">Settings</h2>
@@ -170,7 +170,7 @@ const SettingsScreen: React.FC = () => {
           <RuleItem icon={<Layers />} text="6 piles: 7 down + 1 up each." />
           <RuleItem icon={<Hand />} text="Start with 4 cards in hand." />
           <RuleItem icon={<Dice5 />} text="Roll dice to take matching pile card." />
-          <RuleItem icon={<RotateCcw />} text="Max 3 rolls per round." />
+          <RuleItem icon={<RotateCcw />} text="Max 5 rolls per round." />
           <RuleItem icon={<HandIcon />} text="Hand limit: 7 cards." />
           <RuleItem icon={<MousePointer2 />} text="Select up to 5 cards & play." />
           <RuleItem icon={<Medal />} text="Score using Poker ranks." />
@@ -186,26 +186,24 @@ const SettingsScreen: React.FC = () => {
             <h3 className="text-xl font-display font-bold text-parlor-primary">Hand Multipliers</h3>
           </div>
           <div className="flex items-center gap-2">
-            <button 
+            <button
               onClick={handleReset}
               disabled={!isModifiedFromDefault}
               title="Reset to Defaults"
-              className={`p-2 rounded-full transition-all ${
-                isModifiedFromDefault 
-                  ? 'text-parlor-secondary hover:bg-parlor-secondary/10 active:scale-90' 
+              className={`p-2 rounded-full transition-all ${isModifiedFromDefault
+                  ? 'text-parlor-secondary hover:bg-parlor-secondary/10 active:scale-90'
                   : 'text-parlor-primary/10 cursor-not-allowed'
-              }`}
+                }`}
             >
               <ResetIcon className="w-5 h-5" />
             </button>
-            <button 
+            <button
               onClick={handleSave}
               disabled={!isDirty}
-              className={`px-5 py-2 rounded-full font-display font-bold text-[10px] tracking-widest transition-all shadow-sm ${
-                isDirty 
-                  ? 'bg-parlor-secondary text-white hover:shadow-md active:scale-95' 
+              className={`px-5 py-2 rounded-full font-display font-bold text-[10px] tracking-widest transition-all shadow-sm ${isDirty
+                  ? 'bg-parlor-secondary text-white hover:shadow-md active:scale-95'
                   : 'bg-parlor-surface-highest text-parlor-primary/30 cursor-not-allowed'
-              }`}
+                }`}
             >
               SAVE
             </button>
@@ -233,7 +231,7 @@ const SettingsScreen: React.FC = () => {
               </div>
 
               <div className="flex items-center bg-parlor-surface-container rounded-lg p-1">
-                <button 
+                <button
                   onClick={() => handleUpdate(hand, -1)}
                   className="w-10 h-10 flex items-center justify-center text-parlor-primary hover:bg-parlor-surface-highest rounded-md transition-colors"
                 >
@@ -242,7 +240,7 @@ const SettingsScreen: React.FC = () => {
                 <div className="w-10 text-center font-display font-bold text-parlor-primary text-lg">
                   {pendingMultipliers[hand] || multipliers[hand] || 1}
                 </div>
-                <button 
+                <button
                   onClick={() => handleUpdate(hand, 1)}
                   className="w-10 h-10 flex items-center justify-center text-parlor-primary hover:bg-parlor-surface-highest rounded-md transition-colors"
                 >

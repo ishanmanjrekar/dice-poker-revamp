@@ -12,7 +12,7 @@ const Die: React.FC<DieProps> = ({ value, isRolling }) => {
       <AnimatePresence mode="wait">
         <motion.img
           key={isRolling ? 'rolling' : value}
-          src={`/src/assets/dice/dice-six-faces-${['one', 'two', 'three', 'four', 'five', 'six'][value - 1]}.svg`}
+          src={`./assets/dice/dice-six-faces-${['one', 'two', 'three', 'four', 'five', 'six'][value - 1]}.svg`}
           alt={`Dice ${value}`}
           className="w-8 h-8 object-contain text-parlor-primary"
           initial={{ scale: 0.8, rotate: -45, opacity: 0 }}

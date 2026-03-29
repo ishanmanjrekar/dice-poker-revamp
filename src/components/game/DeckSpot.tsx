@@ -47,7 +47,7 @@ const DeckSpot: React.FC<DeckSpotProps> = ({ deck, onDraw, isClickable, isHighli
                {topCard.rank}
              </span>
              <img 
-               src={`/src/assets/suits/suits-${topCard.suit.toLowerCase()}.png`} 
+               src={`./assets/suits/suits-${topCard.suit.toLowerCase()}.png`} 
                alt={topCard.suit} 
                className="w-4 h-4 object-contain mt-0.5 opacity-90"
              />
