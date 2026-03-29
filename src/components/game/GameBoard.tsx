@@ -8,6 +8,7 @@ import HandArea from './HandArea';
 import Card from './Card';
 import Die from './Die';
 import MatchLog from './MatchLog';
+import ScoringAnimation from './ScoringAnimation';
 import { HapticController } from '../../core/sensory-feedback';
 import { evaluateHand } from '../../core/poker-engine';
 import gameConfig from '../../../game-config.json';
@@ -53,6 +54,12 @@ const GameBoard: React.FC = () => {
     card: any;
     start: { x: number; y: number };
     end: { x: number; y: number };
+  } | null>(null);
+  const [scoringAnim, setScoringAnim] = useState<{
+    handName: string;
+    points: number;
+    startX: number;
+    startY: number;
   } | null>(null);
 
   // Derived: Current Hand Ranking
@@ -156,7 +163,19 @@ const GameBoard: React.FC = () => {
 
   const handlePlayHand = () => {
     if (selectedIds.length === 0) return;
-    playHand(selectedCards);
+    
+    const result = evaluateHand(selectedCards, useGameStore.getState().multipliers);
+    const playButtonEl = document.getElementById('play-button');
+    const rect = playButtonEl?.getBoundingClientRect();
+    
+    setScoringAnim({
+      handName: result.handName,
+      points: result.finalScore,
+      startX: rect ? rect.left + rect.width / 2 : window.innerWidth / 2,
+      startY: rect ? rect.top : window.innerHeight / 2
+    });
+
+    playHand(selectedCards, true); // Update game state but SKIP score update
     setSelectedIds([]);
     HapticController.trigger('success');
   };
@@ -224,6 +243,7 @@ const GameBoard: React.FC = () => {
             </div>
 
             <button
+              id="play-button"
               onClick={() => selectedIds.length > 0 ? handlePlayHand() : triggerTooltip('play', 'Select at least one card to play')}
               className={`w-full py-4 bg-parlor-secondary text-white rounded-2xl font-display font-extrabold text-base tracking-[0.1em] uppercase shadow-xl shadow-parlor-secondary/25 active:scale-[0.98] transition-all ${selectedIds.length === 0 ? 'opacity-20 grayscale cursor-default' : ''}`}
             >
@@ -410,6 +430,19 @@ const GameBoard: React.FC = () => {
           ))}
         </AnimatePresence>
       </div>
+
+      {scoringAnim && (
+        <ScoringAnimation
+          handName={scoringAnim.handName}
+          points={scoringAnim.points}
+          startX={scoringAnim.startX}
+          startY={scoringAnim.startY}
+          onComplete={() => {
+            useGameStore.getState().addToTotalScore(scoringAnim.points);
+            setScoringAnim(null);
+          }}
+        />
+      )}
     </div>
   );
 };

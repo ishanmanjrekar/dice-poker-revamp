@@ -7,11 +7,12 @@ import gameConfig from '../../game-config.json';
 
 interface GameActions {
   rollDice: (dieValue: number) => void;
-  playHand: (selectedCards: Card[]) => void;
+  playHand: (selectedCards: Card[], skipScoreUpdate?: boolean) => void;
   resetGame: () => void;
   toggleCardSelection: (cardId: string) => void;
   setScreen: (screen: ScreenType) => void;
   updateMultipliers: (multipliers: Record<string, number>) => void;
+  addToTotalScore: (points: number) => void;
 }
 
 const initialState: GameState = {
@@ -85,12 +86,12 @@ export const useGameStore = create<GameState & GameActions>()(
         }
       },
 
-      playHand: (selectedCards: Card[]) => {
+      playHand: (selectedCards: Card[], skipScoreUpdate = false) => {
         const { hand, discardPile, totalScore, handsPlayed, history, highScores, multipliers } = get();
         if (selectedCards.length === 0) return;
  
         const result = evaluateHand(selectedCards, multipliers);
-        const newTotalScore = totalScore + result.finalScore;
+        const newTotalScore = skipScoreUpdate ? totalScore : totalScore + result.finalScore;
         const newHandsPlayed = handsPlayed + 1;
 
         const newHand = hand.filter(c => !selectedCards.find(sc => sc.id === c.id));
@@ -156,6 +157,10 @@ export const useGameStore = create<GameState & GameActions>()(
  
       updateMultipliers: (multipliers: Record<string, number>) => {
         set({ multipliers });
+      },
+
+      addToTotalScore: (points: number) => {
+        set((state) => ({ totalScore: state.totalScore + points }));
       }
     }),
     {

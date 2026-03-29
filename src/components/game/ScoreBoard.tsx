@@ -19,7 +19,7 @@ const ScoreBoard: React.FC = () => {
       {/* Right Side */}
       {currentScreen === 'game' ? (
         <div className="text-right flex flex-col items-end">
-          <div className="text-[11px] font-bold font-display text-parlor-on-surface-variant uppercase tracking-wider">
+          <div id="score-counter" className="text-[11px] font-bold font-display text-parlor-on-surface-variant uppercase tracking-wider">
             SCORE: {totalScore.toLocaleString()}
           </div>
           <div className="text-[11px] font-bold font-display text-parlor-secondary uppercase tracking-wider mt-1">
